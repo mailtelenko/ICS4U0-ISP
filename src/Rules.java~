@@ -1,0 +1,89 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Rules extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	Dimension buttonDimension = new Dimension(140, 32);
+	Game window;
+	JButton menu;
+
+	public Rules(Game game) {
+		window = game;
+		
+		this.setLayout(new BorderLayout());
+
+		JLabel title = new JLabel("Rules");
+		JLabel instructions = new JLabel();
+		instructions.setText("<html>"+ "There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case. Click on New Game to begin level one. Have fun!" +"</html>");
+		// Add to MainMenu panel
+		add(title, BorderLayout.NORTH);
+		add(instructions, BorderLayout.CENTER);
+		add(createButtons(), BorderLayout.SOUTH);
+
+	}
+
+	private JPanel createButtons() {
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+
+		JPanel wrapper = new JPanel(new GridBagLayout());
+
+		menu = new JButton("Main Menu");
+
+		setButton(menu);
+
+		buttons.add(menu);
+		buttons.add(Box.createVerticalStrut(10));
+
+		wrapper.add(buttons);
+
+		return wrapper;
+	}
+
+	private void setButton(JButton button) {
+		button.setPreferredSize(buttonDimension);
+		button.setMinimumSize(buttonDimension);
+		button.setMaximumSize(buttonDimension);
+		
+		//Style Buttons
+		button.setFocusPainted(false);
+		button.setForeground(Color.BLACK);
+		button.setBackground(Color.decode("#3a7ce8"));
+		
+		//Create action listener
+		//Create action listeners
+		button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuClicked(e);
+            }
+        });
+	}
+	
+	private void menuClicked(ActionEvent e) {
+		JButton compare = (JButton)e.getSource();
+		if(compare == menu) {
+			window.remove(window.r);
+			window.add(window.m);
+			window.validate();
+			window.repaint();
+		}
+	}
+
+}
