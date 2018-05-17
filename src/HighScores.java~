@@ -1,0 +1,8 @@
+public class HighScores extends MenuParent{
+  
+  public HighScores(Game gme){
+    
+  }
+  
+  
+}

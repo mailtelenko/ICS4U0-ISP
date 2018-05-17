@@ -19,12 +19,12 @@ public class MainMenu extends MenuParent {
    */
   private static final long serialVersionUID = 1L;
   
-  Dimension buttonDimension = new Dimension(140, 32);
-  Game window;
-  JButton newGame, rules, highScores, exit;
+  private Game game;
+  private JButton newGame, rules, highScores, exit;
   
-  public MainMenu(Game game) {
-    super(game, "Cyber Case");
+  public MainMenu(Game gme) {
+    super(gme, "Cyber Case");
+    game = gme;
     
     // Add to MainMenu panel
     add(createButtons(), BorderLayout.CENTER);
@@ -60,27 +60,20 @@ public class MainMenu extends MenuParent {
     return wrapper;
   }
   
-    public void createListener(JButton button){
-     //Create action listeners
-    button.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        buttonClicked(e);
-      }
-    });
-  }
-  
-  
   public void buttonClicked(ActionEvent e) {
     JButton compare = (JButton)e.getSource();
+    game.window.getContentPane().removeAll();
     if(compare == newGame)
-      System.out.println("New Game");
+      game.window.getContentPane().add(game.mainMenu);
     else if(compare == highScores)
-      System.out.println("High Scores");
+      game.window.getContentPane().add(new HighScores(game));
     else if(compare == rules)
-      System.out.println("Rules");
+      game.window.getContentPane().add(new Rules(game));
     else
       System.exit(0); //Exit program :(
+    
+    game.window.validate();
+    game.window.repaint();
   }
   
 }

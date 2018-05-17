@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,27 +13,30 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Rules extends MenuParent {
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+public class HighScores extends MenuParent{
   
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+  private Game game;
+  private JButton menu, erase;
+  ArrayList<String> scores;
   
-  JButton menu;
-  Game game;
-  
-  public Rules(Game gme) {
-    super(gme, "Rules");
+  public HighScores(Game gme){
+    super(gme, "High Scores");
     game = gme;
     
-    JLabel instructions = new JLabel();
-    instructions.setText("<html>"+ "There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case. Click on New Game to begin level one. Have fun!" +"</html>");
+    JPanel scorePanel = new JPanel(new GridBagLayout());
+    
+    scores = readScores();
+    for (int x = 0; x < scores.size(); x++){
+      scorePanel.add(new JLabel(scores.get(x)));
+    }
+    
+    add(scorePanel);
     
     // Add to MainMenu panel
-    add(instructions, BorderLayout.CENTER);
     add(createButtons(), BorderLayout.SOUTH);
-    
   }
   
   private JPanel createButtons() {
@@ -41,13 +45,31 @@ public class Rules extends MenuParent {
     
     JPanel wrapper = new JPanel(new GridBagLayout());
     
+    JButton erase = new JButton("Erase");
+    setButton(erase);
+    
     menu = createCenterMenu(buttons);
+    
+    createDualButtons(buttons, menu, erase);
     
     wrapper.add(buttons);
     
     return wrapper;
   }
   
+  private ArrayList<String> readScores(){
+    ArrayList<String> input = new ArrayList<String>();
+    String temp;
+    try{
+      BufferedReader dataIn = new BufferedReader(new FileReader("../resources/data/highScores.txt"));
+      while ((temp = dataIn.readLine()) != null) {
+        input.add(temp); 
+      }
+    }catch(Exception e){
+      System.out.println(e);
+    }
+    return input;
+  }
   
   public void buttonClicked(ActionEvent e) {
     JButton compare = (JButton)e.getSource();
