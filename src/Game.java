@@ -17,12 +17,14 @@ public class Game extends JFrame{
  
  public MainMenu mainMenu;
  public Rules rules;
- public HighScores highScores;
+ public Setup setup;
  public JFrame window;
  
  public Game() {
    window = new JFrame("Cyber Case");
    mainMenu  = new MainMenu(this);
+   rules = new Rules(this); 
+   setup = new Setup(this);
    
    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    window.add(mainMenu);

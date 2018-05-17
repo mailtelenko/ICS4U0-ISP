@@ -41,7 +41,12 @@ public class Rules extends MenuParent {
     
     JPanel wrapper = new JPanel(new GridBagLayout());
     
-    menu = createCenterMenu(buttons);
+    menu = new JButton("Main Menu");
+    
+    setButton(menu);
+    
+    buttons.add(menu);
+    buttons.add(Box.createVerticalStrut(10));
     
     wrapper.add(buttons);
     
@@ -49,12 +54,23 @@ public class Rules extends MenuParent {
   }
   
   
+  public void createListener(JButton button){
+     //Create action listeners
+    button.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        buttonClicked(e);
+      }
+    });
+  }
+  
   public void buttonClicked(ActionEvent e) {
     JButton compare = (JButton)e.getSource();
     if(compare == menu) {
       game.window.getContentPane().removeAll();
       game.window.getContentPane().add(game.mainMenu);
     }
+    
     game.window.validate();
     game.window.repaint();
   }

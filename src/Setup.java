@@ -11,26 +11,38 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-public class Rules extends MenuParent {
-  
+public class Setup extends MenuParent {
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
   
-  JButton menu;
+  JButton cont;
   Game game;
   
-  public Rules(Game game) {
-    super(game, "Rules");
-    game = game;
+  public Setup(Game gme) {
+    super(gme, "Setup");
+    game = gme;
     
-    JLabel instructions = new JLabel();
-    instructions.setText("<html>"+ "There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case. Click on New Game to begin level one. Have fun!" +"</html>");
+    JLabel prompt = new JLabel();
+    prompt.setText("<html>"+ "Please enter your name: " +"</html>");
     
-    // Add to MainMenu panel
-    add(instructions, BorderLayout.CENTER);
+    JTextField textField = new JTextField(30);
+    setVisible(true);
+    textField.requestFocusInWindow();
+    String name = textField.getText();
+    textField.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent event) {
+        System.out.println("The entered text is: " + textField.getText());
+      }
+    });
+    
+    // Add to Setup panel
+    add(prompt);
+    add(textField, BorderLayout.CENTER);
     add(createButtons(), BorderLayout.SOUTH);
     
   }
@@ -41,11 +53,11 @@ public class Rules extends MenuParent {
     
     JPanel wrapper = new JPanel(new GridBagLayout());
     
-    menu = new JButton("Main Menu");
+    cont = new JButton("Continue");
     
-    setButton(menu);
+    setButton(cont);
     
-    buttons.add(menu);
+    buttons.add(cont);
     buttons.add(Box.createVerticalStrut(10));
     
     wrapper.add(buttons);
@@ -65,14 +77,14 @@ public class Rules extends MenuParent {
   }
   
   public void buttonClicked(ActionEvent e) {
-    //JButton compare = (JButton)e.getSource();
-    //if(compare == menu) {
-      //game.window.getContentPane().removeAll();
-      //game.window.getContentPane().add(game.m);
-    //}
+    JButton compare = (JButton)e.getSource();
+    if(compare == cont) {
+//      game.window.getContentPane().removeAll();
+//      game.window.getContentPane().add(game.levelOne);
+      System.out.println("Continue");
+    }
     
-    game.window.validate();
-    game.window.repaint();
+//    game.window.validate();
+//    game.window.repaint();
   }
-  
 }
