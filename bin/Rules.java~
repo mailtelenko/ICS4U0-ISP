@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainMenu extends JPanel {
+public class Rules extends JPanel {
 
 	/**
 	 * 
@@ -21,18 +21,20 @@ public class MainMenu extends JPanel {
 	
 	Dimension buttonDimension = new Dimension(140, 32);
 	Game window;
-	JButton newGame, rules, highScores, exit;
+	JButton menu;
 
-	public MainMenu(Game game) {
+	public Rules(Game game) {
 		window = game;
 		
 		this.setLayout(new BorderLayout());
 
-		JLabel title = new JLabel("Cyber Case");
-
+		JLabel title = new JLabel("Rules");
+		JLabel instructions = new JLabel();
+		instructions.setText("<html>"+ "There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case. Click on New Game to begin level one. Have fun!" +"</html>");
 		// Add to MainMenu panel
 		add(title, BorderLayout.NORTH);
-		add(createButtons(), BorderLayout.CENTER);
+		add(instructions, BorderLayout.CENTER);
+		add(createButtons(), BorderLayout.SOUTH);
 
 	}
 
@@ -42,23 +44,12 @@ public class MainMenu extends JPanel {
 
 		JPanel wrapper = new JPanel(new GridBagLayout());
 
-		newGame = new JButton("New Game");
-		rules = new JButton("Rules");
-		highScores = new JButton("High Scores");
-		exit = new JButton("Exit");
+		menu = new JButton("Main Menu");
 
-		setButton(newGame);
-		setButton(rules);
-		setButton(highScores);
-		setButton(exit);
+		setButton(menu);
 
-		buttons.add(newGame);
+		buttons.add(menu);
 		buttons.add(Box.createVerticalStrut(10));
-		buttons.add(rules);
-		buttons.add(Box.createVerticalStrut(10));
-		buttons.add(highScores);
-		buttons.add(Box.createVerticalStrut(10));
-		buttons.add(exit);
 
 		wrapper.add(buttons);
 
@@ -87,14 +78,12 @@ public class MainMenu extends JPanel {
 	
 	private void menuClicked(ActionEvent e) {
 		JButton compare = (JButton)e.getSource();
-		if(compare == newGame)
-			System.out.println("New Game");
-		else if(compare == highScores)
-			System.out.println("High Scores");
-		else if(compare == rules)
-			System.out.println("Rules");
-		else
-			System.exit(0); //Exit program :(
+		if(compare == menu) {
+			window.remove(window.r);
+			window.add(window.m);
+			window.validate();
+			window.repaint();
+		}
 	}
 
 }

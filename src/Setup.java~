@@ -1,3 +1,74 @@
+import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 public class Setup extends MenuParent {
-  
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	String name;
+	JButton cont;
+	JTextField textField;
+	Game game;
+
+	public Setup(Game gme) {
+		super(gme, "Setup");
+		game = gme;
+
+		JPanel container = new JPanel(new GridBagLayout());
+
+		JLabel prompt = new JLabel();
+		prompt.setText("<html>" + "Please enter your name:<br/>" + "</html>");
+		container.add(prompt);
+		container.add(Box.createHorizontalStrut(10));
+
+		textField = new JTextField(30);
+		container.add(textField);
+		textField.requestFocusInWindow();
+
+		// Add to Setup panel
+		add(container, BorderLayout.CENTER);
+		add(createButtons(), BorderLayout.SOUTH);
+
+	}
+
+	private JPanel createButtons() {
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+
+		JPanel wrapper = new JPanel(new GridBagLayout());
+
+		cont = new JButton("Continue");
+
+		setButton(cont);
+
+		buttons.add(cont);
+		buttons.add(Box.createVerticalStrut(10));
+
+		wrapper.add(buttons);
+
+		return wrapper;
+	}
+
+	public void buttonClicked(ActionEvent e) {
+		JButton compare = (JButton) e.getSource();
+		if (compare == cont) {
+			// game.window.getContentPane().removeAll();
+			// game.window.getContentPane().add(game.levelOne);
+			name = textField.getText();
+			System.out.println("Continue" + name);
+		}
+
+		// game.window.validate();
+		// game.window.repaint();
+	}
 }

@@ -1,0 +1,20 @@
+public class MenuParent extends JPanel{
+  
+ Dimension buttonDimension = new Dimension(140, 32);
+  Game window;
+  JButton newGame, rules, highScores, exit;
+  
+  public MainMenu(Game game) {
+    window = game;
+    
+    this.setLayout(new BorderLayout());
+    
+    JLabel title = new JLabel("Cyber Case");
+    
+    // Add to MainMenu panel
+    add(title, BorderLayout.NORTH);
+    add(createButtons(), BorderLayout.CENTER);
+    
+  }
+  
+  
