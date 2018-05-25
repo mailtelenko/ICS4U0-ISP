@@ -2,152 +2,313 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.TimerTask;
 import java.util.Timer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 /**
- * The Rules class displays the rules of the game.
+ * The LevelParent class is the parent to all 3 levels of the game. It contains essential
+ * methods which are used in each level.
  * 
  * <h2>Course Info:</h2> ICS4U0 with Krasteva, V.
  * 
- * @version 18.05.18
+ * @version 0.2
  * @author Liam Telenko and Russell Leong
  */
 public abstract class LevelParent extends JPanel implements MouseListener {
 
-	/** Verify sender/receiver of object. */
-	private static final long serialVersionUID = 1L;
-	/** Dimensions for buttons */
-	Dimension buttonDimension = new Dimension(140, 32);
-	/** Creates menu button */
-	public JButton menu, gameContinue, replay;
-	/** Creates reference to Game class */
-	private Game game;
-	/** Timer panel (top left) */
-	JPanel timerPanel;
-	JLabel timerLabel;
-	Timer timer = new Timer();
+ /** Verify sender/receiver of object. */
+ private static final long serialVersionUID = 1L;
+ /** Dimensions for buttons */
+ Dimension buttonDimension = new Dimension(140, 32);
+ /** Creates menu button */
+ public JButton menu, gameContinue, replay, exitPanel;
+ /** Timer panel (top left) */
+ JPanel timerPanel;
+ /** Timer label (digits) */
+ JLabel timerLabel;
+ /** Timer object used to control counting*/
+ Timer timer = new Timer();
+ 
+ /** JFrame for popup (when object is clicked on screen)*/
+ JFrame infoPane;
+ /** Title of infoPane */
+ JLabel infoTitle;
+ /** Description of object in panel */
+ JLabel infoContent;
+ /** Close up of object (image at top of panel) */
+ JLabel imageLabel;
+ /* Font for use as title */
+ Font pixelFont;
 
-	public LevelParent(Game gme) {
-		game = gme;
+ /* Dimensions for timer & info JFrame */
+ Dimension timerDimension = new Dimension(100, 60);
+ Dimension infoDimension = new Dimension(350, 450);
+ 
+ /**
+  * LevelParent class constructor creates the buttons for use in both the main JPanel (game.window) as
+  * well as the object information frame (infoPane).
+  * 
+ */
+ public LevelParent() {
+  createButtons(); //Create buttons for use in panels
+  this.setLayout(new BorderLayout()); //Set panel layout to BorderLayout
+  this.setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 0), new LineBorder(new Color(1, 16, 63), 7))); //Create a coloured border on the panel
+  this.addMouseListener(this); //Add a MouseListener to the panel
+  this.add(createTimer()); //Add the timer to the panel
+  
+  infoPane = createInfoPane(); //Create a generic infoPane
 
-		createButtons();
-		this.setLayout(new BorderLayout());
-		this.addMouseListener(this);
-		this.add(createTimer());
+  timer.schedule(new RemindTask(), 0, 1000); //Set the timer to update every second
+ }
 
-		timer.schedule(new RemindTask(), 0, 1000);
-	}
+ //HOW DO YOU COMMENT THIS?//
+ class RemindTask extends TimerTask {
+  double timeRem = 70; //5 minutes (300 seconds)
 
-	class RemindTask extends TimerTask {
-		double timeRem = 10; //5 minutes (300 seconds)
+  /**
+   * run method is continuously run every second (timer.schedule(new RemindTas(), 0, 1000)). The method
+   * updates the timer by removind one from timeRem each second. The timer will stop and call finishGame(false)
+   * (lose game) when the timer runs out.
+   */
+  public void run() {
+   timeRem--; //Subtract one from time remaining
+   if (timeRem < 0) { //If there is no time remaining
+    timer.cancel(); //Cancel timer
+    timer.purge(); //Purge timer
+    finishGame(false); //End game (lose)
+   }else { //Time still remaining
+    if(((int)timeRem/60) <= 0) //If there is less than a minute remaining
+     timerLabel.setText("" + (int)((timeRem % 60)/10) + (int)(timeRem %60 %10)); //Set label
+    else //More than a minute
+     timerLabel.setText((int)((timeRem / 60.0)) + ":" + (int)((timeRem % 60)/10) + (int)(timeRem % 60 %10)); //Set label
+   }
+  }
+ }
 
-		public void run() {
-			timeRem--;
-			if (timeRem < 0) {
-				timer.cancel();
-				timer.purge();
-				finishGame(false);
-			}else
-				timerLabel.setText((int)((timeRem / 60.0)) + ":" + (int)(timeRem % 60));
-		}
-	}
+ /**
+  * createTimer creates a label to be displayed onto the main panel which will display the remaining time.
+  */
+ public JPanel createTimer() {
+  timerPanel = new JPanel(); //Create new panel to house timer
+  timerPanel.add(timerLabel = new JLabel("")); //Set timer label to nothing and add to timerPanel
+  timerLabel.setHorizontalAlignment(SwingConstants.CENTER); //Align center (horizontally)
+  //Set size of label
+  timerLabel.setMinimumSize(timerDimension);
+  timerLabel.setPreferredSize(timerDimension);
+  timerLabel.setMaximumSize(timerDimension);
+  //Add coloured border to label
+  timerLabel.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(new Color(1, 16, 63), 4)));
+  //Attempt to create a new custom font
+  try {
+   pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/VT323-Regular.ttf")).deriveFont(25f); //Set font
+   timerLabel.setFont(pixelFont); //Add font to label
+  } catch (FontFormatException e) {
+   e.printStackTrace();
+  } catch (IOException e) {
+   e.printStackTrace();
+  }
+  return timerPanel; //Return completed panel
+ }
+ 
+ /**
+  * createButtons method creates a mainMenu button to return to mainMenu
+  */
+ private void createButtons() {
+  // Create new JButtons
+  menu = new JButton("Main Menu");
+  gameContinue = new JButton("Continue");
+  replay = new JButton("Retry");
+  exitPanel = new JButton("Continue");
 
-	public JPanel createTimer() {
-		timerPanel = new JPanel();
-		timerPanel.add(timerLabel = new JLabel(""));
-		return timerPanel;
-	}
-	
-	/**
-	 * createButtons method creates a mainMenu button to return to mainMenu
-	 */
-	private void createButtons() {
-		menu = new JButton("Main Menu");
-		gameContinue = new JButton("Continue");
-		replay = new JButton("Retry");
+  // Tweak/format buttons
+  setButton(menu);
+  setButton(gameContinue);
+  setButton(replay);
+ }
 
-		setButton(menu);
-		setButton(gameContinue);
-		setButton(replay);
-	}
+ /**
+  * setButton sets the correct size for the buttons and modifies their appearance. This method keeps consistancy
+  * between the buttons of the program.
+  * @param button
+  */
+ public void setButton(JButton button) {
+  // Set size
+  button.setPreferredSize(buttonDimension);
+  button.setMinimumSize(buttonDimension);
+  button.setMaximumSize(buttonDimension);
 
-	public void setButton(JButton button) {
-		// Set size
-		button.setPreferredSize(buttonDimension);
-		button.setMinimumSize(buttonDimension);
-		button.setMaximumSize(buttonDimension);
+  // Style Buttons
+  button.setFocusPainted(false);
+  button.setForeground(Color.BLACK);
+  button.setBackground(Color.decode("#3a7ce8"));
 
-		// Style Buttons
-		button.setFocusPainted(false);
-		button.setForeground(Color.BLACK);
-		button.setBackground(Color.decode("#3a7ce8"));
+  // Add action listener to button
+  button.addActionListener(new ActionListener() {
+   @Override
+   public void actionPerformed(ActionEvent e) {
+    buttonClicked(e);
+   }
+  });
+ }
 
-		// Add action listener to button
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				buttonClicked(e);
-			}
-		});
-	}
+ /**
+  * createDualButtons method adds two buttons to a JPanel in order to keep them in line on the JFrame.
+  * 
+  * @param panel
+  * @param button1
+  * @param button2
+  */
+ public void createDualButtons(JPanel panel, JButton button1, JButton button2) {
+  JPanel flow = new JPanel(new FlowLayout()); // Create FlowLayout panel
+  flow.add(button1); // Add buttons
+  flow.add(button2); // Add buttons
+  panel.add(flow, BorderLayout.SOUTH); // Add FlowLayout with buttons to panel
+ }
+ 
+ /**
+  * createInfoPane returns a JFrame completed with the layout of the info panel. The info panel displays
+  * information about the clicked object, along with an image.
+  * @return
+  */
+ private JFrame createInfoPane() {
+  JFrame tempFrame = new JFrame(); //Create temporary frame
+  JPanel content = new JPanel(new BorderLayout()); //New panel to house content (text)
+  JPanel text = new JPanel(); //New JPanel to house block text in content
+  JPanel bottomButton = new JPanel(new FlowLayout()); //New JPanel to house button at bottom of screen
+  Dimension infoContentDimension = new Dimension(300,160); //Dimension used for the inner content
+  
+  //Set up exit button with custom action listener
+  // Set size
+  exitPanel.setPreferredSize(buttonDimension);
+  exitPanel.setMinimumSize(buttonDimension);
+  exitPanel.setMaximumSize(buttonDimension);
 
-	public void createDualButtons(JPanel panel, JButton button1, JButton button2) {
-		JPanel flow = new JPanel(new FlowLayout()); // Create FlowLayout panel
-		flow.add(button1); // Add buttons
-		flow.add(button2); // Add buttons
-		panel.add(flow, BorderLayout.SOUTH); // Add FlowLayout with buttons to panel
-	}
+  // Style Buttons
+  exitPanel.setFocusPainted(false);
+  exitPanel.setForeground(Color.BLACK);
+  exitPanel.setBackground(Color.decode("#3a7ce8"));
+  
+  // Add action listener to button
+  exitPanel.addActionListener(new ActionListener() {
+   @Override
+   public void actionPerformed(ActionEvent e) {
+    tempFrame.setVisible(false);
+   }
+  });
+  
+  //Set the JFrame
+  tempFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE); //Default close operation
+  tempFrame.setSize(infoDimension); //Set size
+  tempFrame.setResizable(false); //Turn off user resizing
+  tempFrame.setLocationRelativeTo(null); //Position in the center
+  
+  //Set the content style
+  content.setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 0), new LineBorder(new Color(1, 16, 63), 7))); //Border around frame
+  content.setBackground(Color.WHITE); //Background colour to white
+  
+  text.add(infoTitle = new JLabel("Title")); //Add the JLabel for title
+  //Add the JLabel for block content
+  text.add(infoContent = new JLabel("<html>" + "<center>This will be a paragraph about the content. It will be long... probably longer than this. Maybe about the same size. I dont know bada dun mabwowke fhwlewkljfjew fwehouwelnfewoiwjf eiewfhfe</center>" + "</html>"));
+  text.setBackground(Color.WHITE); //Set the background colour to white 
+  text.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5), new LineBorder(new Color(1,16,63), 5))); //Set the border colour of the text
+  
+  //Set the font for the text (pixels)
+  infoTitle.setFont(pixelFont);
+  //infoContent.setFont(pixelFont);
+  
+  //Set the size of the content
+  infoContent.setMinimumSize(infoContentDimension);
+  infoContent.setPreferredSize(infoContentDimension);
+  infoContent.setMaximumSize(infoContentDimension);
+  
+  //Create a new image
+  ImageIcon image = new ImageIcon(new ImageIcon("resources/images/levelOne/items/book.png").getImage().getScaledInstance(100, 100, 10));
+  imageLabel = new JLabel("", image, JLabel.CENTER);
+  imageLabel.setBorder(new EmptyBorder(10, 10, 10, 10)); //Add padding to image
+  
+  bottomButton.add(exitPanel); //Add exit button to bottomButton panel
+  bottomButton.setBackground(Color.WHITE); //Set background to white
+  
+  content.add(imageLabel, BorderLayout.NORTH ); //Add image
+  content.add(text); //Add block text
+  content.add(bottomButton, BorderLayout.SOUTH); //Add button
+  
+  tempFrame.add(content, BorderLayout.CENTER); //Add content to JFrame
+  
+  return tempFrame; //Return JFrame
+ }
+ 
+ /**
+  * showInfoPane sets the conent of the infoPane and then displays it to the user.
+  * 
+  * @param data
+  */
+ public void showInfoPane(String[] data) {
+  infoTitle.setText(data[0]); //Set title
+  infoContent.setText("<html>"+"<center>" + data[1] + "</center>" + "</html>"); //Set block text
+  //Create new image
+  imageLabel.setIcon(new ImageIcon(new ImageIcon("resources/images/levelOne/items/"+data[0]+".png").getImage().getScaledInstance(100, 100, 10)));
+  infoPane.setVisible(true); //Set to visible
+ }
 
-	/**
-	 * buttonClicked checks if mainMenu button is clicked
-	 * 
-	 * @param e
-	 *            Checks if an ActionEvent is made on the button.
-	 */
-	public abstract void buttonClicked(ActionEvent e);
 
-	public abstract void finishGame(boolean win);
-	
-	@Override
-	public void mouseClicked(java.awt.event.MouseEvent arg0) {
-		System.out.println("Mouse clicked");
-		System.out.print("X and Y coords: ");
-		System.out.print(arg0.getX() + ", ");
-		System.out.println(arg0.getY());
+ /**
+  * buttonClicked checks if mainMenu button is clicked
+  * 
+  * @param e
+  *            Checks if an ActionEvent is made on the button.
+  */
+ public abstract void buttonClicked(ActionEvent e);
+ public abstract void finishGame(boolean win);
+ 
+ @Override
+ public void mouseClicked(java.awt.event.MouseEvent arg0) {
+  System.out.println("Mouse clicked");
+  System.out.print("X and Y coords: ");
+  System.out.print(arg0.getX() + ", ");
+  System.out.println(arg0.getY());
 
-	}
+ }
 
-	@Override
-	public void mouseEntered(java.awt.event.MouseEvent e) {
-		System.out.println("Mouse entered");
+ @Override
+ public void mouseEntered(java.awt.event.MouseEvent e) {
+  System.out.println("Mouse entered");
 
-	}
+ }
 
-	@Override
-	public void mouseExited(java.awt.event.MouseEvent e) {
-		System.out.println("Mouse exit");
+ @Override
+ public void mouseExited(java.awt.event.MouseEvent e) {
+  System.out.println("Mouse exit");
 
-	}
+ }
 
-	@Override
-	public void mousePressed(java.awt.event.MouseEvent e) {
-		System.out.println("Mouse pressed");
+ @Override
+ public void mousePressed(java.awt.event.MouseEvent e) {
+  System.out.println("Mouse pressed");
 
-	}
+ }
 
-	@Override
-	public void mouseReleased(java.awt.event.MouseEvent e) {
-		System.out.println("Mouse released");
+ @Override
+ public void mouseReleased(java.awt.event.MouseEvent e) {
+  System.out.println("Mouse released");
 
-	}
+ }
 
 }

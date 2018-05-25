@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import javax.swing.JFrame;
 
 /**
@@ -30,6 +32,7 @@ public class Game extends JFrame {
 		mainMenu = new MainMenu(this); //Create MainMenu JPanel
 		//Setup window
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.getContentPane().setBackground(Color.WHITE);
 		window.add(mainMenu); //Add mainMenu to window
 		window.setSize(800, 600); //Set size
 		window.setLocationRelativeTo(null); //Position in the center

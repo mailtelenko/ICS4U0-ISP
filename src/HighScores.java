@@ -43,6 +43,8 @@ public class HighScores extends MenuParent {
 		}
 
 		scorePanel.add(new JLabel("<html>" + allScores + "</html>")); //Add JLabel to panel
+		
+		scorePanel.setBackground(backgroundColor);
 		add(scorePanel); //Add scorePanel to object
 
 		// Add to MainMenu panel
@@ -55,6 +57,7 @@ public class HighScores extends MenuParent {
 		JPanel wrapper = new JPanel(new GridBagLayout()); //Wrapper panel for buttons
 		
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS)); //Set JPanel layout
+		buttons.setBackground(backgroundColor);
 		
 		//Create & style buttons
 		setButton(erase);
@@ -63,6 +66,8 @@ public class HighScores extends MenuParent {
 		//Add buttons to dual button JPanel
 		createDualButtons(buttons, menu, erase);
 
+		wrapper.setBackground(backgroundColor);
+		
 		//Add buttons to wrapper panel
 		wrapper.add(buttons);
 		return wrapper; //Return wrapper panel

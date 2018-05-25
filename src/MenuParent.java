@@ -38,15 +38,17 @@ public abstract class MenuParent extends JPanel {
 	/** Dimensions for buttons */
 	Dimension buttonDimension = new Dimension(140, 32);
 	public JLabel title; //Title of panel
+	public Color backgroundColor = Color.WHITE;
 
 	public MenuParent(Game game, String titleStr) {
 		window = game; //Set window variable to game object
 		JPanel titlePanel = new JPanel (new FlowLayout());
 		title = new JLabel(titleStr); //Create new JLabel
+		titlePanel.setBackground(backgroundColor);
 		
 		this.setLayout(new BorderLayout()); //Set JPanel layout to BorderLayout
 		this.setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 0), new LineBorder(new Color(1, 16, 63), 7)));
-		this.setBackground(Color.BLACK);
+		this.setBackground(backgroundColor);
 		
 		Font pixelFont;
 		try {
@@ -62,10 +64,7 @@ public abstract class MenuParent extends JPanel {
 		title.setBorder(new EmptyBorder(30, 0, 0, 0));
 		
 		titlePanel.add(title); //Add title to panel
-		add(titlePanel, BorderLayout.NORTH);
-
-		window.window.getContentPane().setBackground(Color.BLACK);
-		
+		add(titlePanel, BorderLayout.NORTH);		
 	}
 
 	public void setButton(JButton button) {
@@ -106,6 +105,7 @@ public abstract class MenuParent extends JPanel {
 		JPanel flow = new JPanel(new FlowLayout()); //Create FlowLayout panel
 		flow.add(button1); //Add buttons
 		flow.add(button2); //Add buttons
+		flow.setBackground(backgroundColor);
 		panel.add(flow); //Add FlowLayout with buttons to panel
 		panel.add(Box.createVerticalStrut(8)); //Create spacing
 	}
