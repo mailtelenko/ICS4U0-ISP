@@ -23,7 +23,7 @@ import javax.swing.border.LineBorder;
  * <h2>Course Info:</h2> ICS4U0 - Ms.Krasteva
  *
  *
- * @version 0.1
+ * @version 0.2
  * @author (Project Manager) Russell Leong, (Project Member) Liam Telenko
  */
 public abstract class MenuParent extends JPanel {
@@ -37,36 +37,54 @@ public abstract class MenuParent extends JPanel {
 	Game window;
 	/** Dimensions for buttons */
 	Dimension buttonDimension = new Dimension(140, 32);
-	public JLabel title; //Title of panel
-	public Color backgroundColor = Color.WHITE;
+	public JLabel title; // Title of panel
+	public Color backgroundColor = new Color(18, 24, 59);
 
+	/**
+	 * MenuParent class constructor creates a title and generic layout for use in
+	 * the program menus.
+	 * 
+	 * @param game
+	 * @param titleStr
+	 */
 	public MenuParent(Game game, String titleStr) {
-		window = game; //Set window variable to game object
-		JPanel titlePanel = new JPanel (new FlowLayout());
-		title = new JLabel(titleStr); //Create new JLabel
-		titlePanel.setBackground(backgroundColor);
-		
-		this.setLayout(new BorderLayout()); //Set JPanel layout to BorderLayout
-		this.setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 0), new LineBorder(new Color(1, 16, 63), 7)));
-		this.setBackground(backgroundColor);
-		
-		Font pixelFont;
+		window = game; // Set window variable to game object
+		JPanel titlePanel = new JPanel(new FlowLayout()); // Create JPanel for title
+		title = new JLabel(titleStr); // Create new JLabel
+
+		// Set JPanel specifications
+		this.setLayout(new BorderLayout()); // Set JPanel layout to BorderLayout
+		this.setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 0), new LineBorder(Color.BLACK, 5))); // Create
+																											// border
+		this.setBackground(backgroundColor); // Set background colour
+
+		titlePanel.setBackground(backgroundColor); // Set background colour
+
+		// Create and set title font
 		try {
-			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/VT323-Regular.ttf")).deriveFont(30f);
-			title.setFont(pixelFont);
-		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
+			// Create font
+			Font pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/VT323-Regular.ttf"))
+					.deriveFont(50f);
+			title.setFont(pixelFont); // Set font
+		} catch (FontFormatException e) { // Catch exception
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) { // Catch exception
 			e.printStackTrace();
 		}
-		title.setBorder(new EmptyBorder(30, 0, 0, 0));
-		
-		titlePanel.add(title); //Add title to panel
-		add(titlePanel, BorderLayout.NORTH);		
+
+		title.setForeground(Color.WHITE); // Set text colour
+		title.setBorder(new EmptyBorder(30, 0, 0, 0)); // Add padding to title
+
+		titlePanel.add(title); // Add title to panel
+		add(titlePanel, BorderLayout.NORTH); // Add titlePanel to JPanel
 	}
 
+	/**
+	 * setButton sets the correct size for the buttons and modifies their
+	 * appearance. This method keeps consistency between the buttons of the program.
+	 * 
+	 * @param button
+	 */
 	public void setButton(JButton button) {
 		// Set size
 		button.setPreferredSize(buttonDimension);
@@ -75,10 +93,11 @@ public abstract class MenuParent extends JPanel {
 
 		// Style Buttons
 		button.setFocusPainted(false);
-		button.setForeground(Color.BLACK);
-		button.setBackground(Color.decode("#3a7ce8"));
+		button.setForeground(Color.WHITE);
+		button.setBackground(Color.decode("#402644"));
+		button.setFont(new Font("Cambria Math", Font.PLAIN, 14));
 
-		//Add action listener to button
+		// Add action listener to button
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,29 +106,57 @@ public abstract class MenuParent extends JPanel {
 		});
 	}
 
+	/**
+	 * createCenterMenu generates a new JButton with the correct name and
+	 * actionListener.
+	 * 
+	 * @return
+	 */
 	public JButton createCenterMenu() {
-		JButton menu = new JButton("Main Menu"); //Create new button
-		setButton(menu); //Add styling & ActionListener
-		return menu; //Return JButton
+		JButton menu = new JButton("Main Menu"); // Create new button
+		setButton(menu); // Add styling & ActionListener
+		return menu; // Return JButton
 	}
 
+	/**
+	 * createCenterMenu creates a fills a JPanel with a mainMenu button properly
+	 * aligned and formatted.
+	 * 
+	 * @param panel
+	 * @return
+	 */
 	public JButton createCenterMenu(JPanel panel) {
-		JButton menu = new JButton("Main Menu"); //Create mainMenu button
-		panel.add(menu); //Add button to panel
-		panel.add(Box.createVerticalStrut(10)); //Add spacing
-		setButton(menu); //Style & ActionListener
-		return menu; //Return button
+		JButton menu = new JButton("Main Menu"); // Create mainMenu button
+		panel.add(menu); // Add button to panel
+		panel.setBackground(backgroundColor);
+		panel.add(Box.createVerticalStrut(10)); // Add spacing
+		setButton(menu); // Style & ActionListener
+		return menu; // Return button
 	}
 
+	/**
+	 * createDualButtons method adds two buttons to a JPanel in order to keep them
+	 * in line on the JFrame.
+	 * 
+	 * @param panel
+	 * @param button1
+	 * @param button2
+	 */
 	public void createDualButtons(JPanel panel, JButton button1, JButton button2) {
-		JPanel flow = new JPanel(new FlowLayout()); //Create FlowLayout panel
-		flow.add(button1); //Add buttons
-		flow.add(button2); //Add buttons
+		JPanel flow = new JPanel(new FlowLayout()); // Create FlowLayout panel
+		flow.add(button1); // Add buttons
+		flow.add(button2); // Add buttons
 		flow.setBackground(backgroundColor);
-		panel.add(flow); //Add FlowLayout with buttons to panel
-		panel.add(Box.createVerticalStrut(8)); //Create spacing
+		panel.add(flow); // Add FlowLayout with buttons to panel
+		panel.add(Box.createVerticalStrut(8)); // Create spacing
 	}
 
-	public abstract void buttonClicked(ActionEvent e); //Abstract buttonClicked method
+	/**
+	 * buttonClicked checks if a button has been clicked and responds appropriately.
+	 * 
+	 * @param e
+	 *            Checks if an ActionEvent is made on the button.
+	 */
+	public abstract void buttonClicked(ActionEvent e); // Abstract buttonClicked method
 
 }

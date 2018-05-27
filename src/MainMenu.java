@@ -1,16 +1,23 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 /**
- * The MainMenu class presents the user with four options to progress in the program. These options
- * are new game, rules, high scores, or exit. Each button leads to a new panel (except for ext which
- * terminates the program).
+ * The MainMenu class presents the user with four options to progress in the
+ * program. These options are new game, rules, high scores, or exit. Each button
+ * leads to a new panel (except for ext which terminates the program).
  * 
  * <h2>Course Info:</h2> ICS4U0 with Krasteva, V.
  * 
@@ -21,10 +28,10 @@ public class MainMenu extends MenuParent {
 
 	/** Verify sender/receiver of object. */
 	private static final long serialVersionUID = 1L;
-	/** Referance to Game object */
+	/** Reference to Game object */
 	private Game game;
 	/**
-	 * Buttons to: Create new game (setup), show rules, show highscores, exit
+	 * Buttons to: Create new game (setup), show rules, show high scores, exit
 	 * program
 	 */
 	private JButton newGame, rules, highScores, exit;
@@ -40,8 +47,38 @@ public class MainMenu extends MenuParent {
 		super(gme, "Cyber Case"); // Call to parent with game object
 		game = gme; // Set object's game object
 
+		// Create coloured border
+		setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 0), new LineBorder(Color.BLACK, 5)));
+
 		// Add to MainMenu panel
 		add(createButtons(), BorderLayout.CENTER);
+	}
+
+	/**
+	 * setButton sets the correct size for the buttons and modifies their
+	 * appearance. This method keeps consistency between the buttons of the program.
+	 * 
+	 * @param button
+	 */
+	public void setButton(JButton button) {
+		// Set size (Specific to mainMenu)
+		button.setPreferredSize(new Dimension(160, 50));
+		button.setMinimumSize(new Dimension(160, 50));
+		button.setMaximumSize(new Dimension(160, 50));
+
+		// Style Buttons
+		button.setFocusPainted(false);
+		button.setForeground(Color.WHITE);
+		button.setBackground(Color.decode("#402644"));
+		button.setFont(new Font("Cambria Math", Font.PLAIN, 14));
+
+		// Add action listener to button
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				buttonClicked(e);
+			}
+		});
 	}
 
 	/**
@@ -75,6 +112,7 @@ public class MainMenu extends MenuParent {
 		buttons.add(Box.createVerticalStrut(10));
 		buttons.add(exit);
 
+		buttons.setBackground(backgroundColor); // Set background colour
 		wrapper.setBackground(backgroundColor); // Set background colour
 
 		wrapper.add(buttons); // Add inner panel (buttons) to wrapper panel (wrapper)

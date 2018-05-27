@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 
@@ -9,6 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 /**
  * The Setup class prompts the user to enter a name input.
@@ -28,14 +33,13 @@ public class Setup extends MenuParent {
 	private JButton cont;
 	/** Textfield to receive user input on screen */
 	private JTextField textField;
-	/** Referance to Game object */
+	/** Reference to Game object */
 	private Game game;
 
 	/**
 	 * Setup class constructor creates layout of setup screen.
 	 * 
-	 * @param gme
-	 *            To create a reference to the Game class.
+	 * @param gme To create a reference to the Game class.
 	 */
 	public Setup(Game gme) {
 		super(gme, "Setup"); // Call to parent with game object
@@ -45,14 +49,20 @@ public class Setup extends MenuParent {
 
 		JLabel prompt = new JLabel(); // Create input label
 		prompt.setText("<html>" + "Please enter your name:<br/>" + "</html>"); // Add text to label
-		container.add(prompt); // Add to continaer
-		container.add(Box.createHorizontalStrut(10)); // Add horizontal spacing betwen label/input
-
+		prompt.setFont(new Font("Cambria Math", Font.PLAIN, 14)); //Set font of prompt
+		prompt.setForeground(Color.WHITE); //Set text colour
+		container.add(prompt); // Add to container
+		container.add(Box.createHorizontalStrut(10)); // Add horizontal spacing between label/input
+		
 		textField = new JTextField(30); // Set text field
-		container.add(textField); // Add text field to containter
+		//Create coloured border
+		textField.setBorder(new CompoundBorder(new LineBorder(Color.decode("#402644"), 3), new EmptyBorder(5,5,5,5)));
+		textField.setFont(new Font("Cambria Math", Font.PLAIN, 14)); //Set font
+		
+		container.add(textField); // Add text field to container
 
 		container.setBackground(backgroundColor); // Set background colour
-
+		
 		// Add to Setup panel
 		add(container, BorderLayout.CENTER);
 		add(createButtons(), BorderLayout.SOUTH);
@@ -76,6 +86,7 @@ public class Setup extends MenuParent {
 		buttons.add(Box.createVerticalStrut(10));
 
 		wrapper.setBackground(backgroundColor); // Set background colour
+		buttons.setBackground(backgroundColor); // Set background colour
 
 		wrapper.add(buttons); // Add inner panel (buttons) to wrapper panel (wrapper)
 

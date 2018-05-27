@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 
@@ -22,7 +24,7 @@ public class Rules extends MenuParent {
 	private static final long serialVersionUID = 1L;
 	/** Creates menu button */
 	private JButton menu;
-	/** Referance to Game object */
+	/** Reference to Game object */
 	private Game game;
 
 	/**
@@ -37,9 +39,11 @@ public class Rules extends MenuParent {
 
 		JLabel instructions = new JLabel(); // Text label
 		instructions.setText("<html>"
-				+ "There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case. Click on New Game to begin level one. Have fun!"
+				+ "<center>There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case. Click on New Game to begin level one. Have fun!</center>"
 				+ "</html>"); // Set text to instructions
-		instructions.setBorder(new EmptyBorder(30, 40, 10, 40));
+		instructions.setBorder(new EmptyBorder(30, 80, 10, 80)); // Set border
+		instructions.setFont(new Font("Cambria Math", Font.PLAIN, 14));// Set font
+		instructions.setForeground(Color.WHITE);// Set font colour
 		add(instructions, BorderLayout.CENTER); // Add instructions to JPanel
 		add(createButtons(), BorderLayout.SOUTH); // Add buttons to bottom of panel
 	}
@@ -56,14 +60,15 @@ public class Rules extends MenuParent {
 		// Create & style buttons
 		menu = createCenterMenu(buttons);
 
-		wrapper.setBackground(backgroundColor);
+		wrapper.setBackground(backgroundColor); // Set background colour
+
 		// Add buttons to wrapper panel
 		wrapper.add(buttons);
 		return wrapper; // Return wrapper panels
 	}
 
 	/**
-	 * buttonClicked checks if mainMenu button is clicked
+	 * buttonClicked checks if a button has been clicked and responds appropriately.
 	 * 
 	 * @param e
 	 *            Checks if an ActionEvent is made on the button.
