@@ -172,10 +172,8 @@ public class LevelOne extends LevelParent {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new LevelOne(game)); // Add mainMenu to panels
 		} else {
-			// game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			// game.window.getContentPane().add(new LevelOne(game)); // Add mainMenu to
-			// panels
-			System.out.println("To quiz");
+			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
+			game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels
 		}
 		game.window.validate(); // Validate JFrame
 		game.window.repaint(); // Repaint JFrame
