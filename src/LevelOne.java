@@ -39,6 +39,7 @@ public class LevelOne extends LevelParent {
 	 *            To create a reference to the Game class.
 	 */
 	public LevelOne(Game gme) {
+		super(gme);
 		game = gme; // Set reference to game object
 
 		// JPanel to centre and house game image
@@ -79,7 +80,7 @@ public class LevelOne extends LevelParent {
 					// object
 					if (Double.parseDouble(location[1]) <= e.getX() && Double.parseDouble(location[2]) >= e.getX()
 							&& Double.parseDouble(location[3]) <= e.getY()
-							&& Double.parseDouble(location[4]) >= e.getY()) {
+							&& Double.parseDouble(location[4]) >= e.getY() && gameRunning) {
 						// Show info panel popup
 						showInfoPane(new String[] { location[0], location[5] });
 						locationFound.set(count, true); // Set object to found
@@ -88,13 +89,14 @@ public class LevelOne extends LevelParent {
 						firstLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 						// Add to JPanel
 						firstLevel.add(updateObjectCounter(), BorderLayout.SOUTH);
+						return;
 					}
 					count++; // Add to count
 				}
 			}
 
 			/**
-			 * mouseEntered is triggered by the entereing of the mouse within the
+			 * mouseEntered is triggered by the entering of the mouse within the
 			 * gameImageLabel
 			 */
 			@Override
@@ -142,6 +144,7 @@ public class LevelOne extends LevelParent {
 	 * @param win Determines if the continue or retry button is displayed.
 	 */
 	public void finishGame(boolean win) {
+		gameRunning = false; //Set game to stop running
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
 		if (win)
@@ -171,7 +174,7 @@ public class LevelOne extends LevelParent {
 		} else if (compare == replay) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new LevelOne(game)); // Add mainMenu to panels
-		} else {
+		} else if(compare == gameContinue){
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels
 		}

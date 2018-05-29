@@ -37,6 +37,8 @@ public abstract class LevelParent extends JPanel {
 
 	/** Verify sender/receiver of object. */
 	private static final long serialVersionUID = 1L;
+	/** Reference to Game object */
+	Game game;
 	/** Dimensions for buttons */
 	Dimension buttonDimension = new Dimension(140, 32);
 	/** Creates menu button */
@@ -51,6 +53,8 @@ public abstract class LevelParent extends JPanel {
 	JLabel timerLabel;
 	/** Timer object used to control counting */
 	Timer timer = new Timer();
+	/** Boolean value for if game is running (no menu screen showing) */
+	Boolean gameRunning = false;
 
 	/** JFrame for popup (when object is clicked on screen) */
 	JFrame infoPane;
@@ -74,8 +78,11 @@ public abstract class LevelParent extends JPanel {
 	/**
 	 * LevelParent class constructor creates the buttons for use in both the main
 	 * JPanel (game.window) as well as the object information frame (infoPane).
+	 * 
+	 * @param g The game reference to be used by the object.
 	 */
-	public LevelParent() {
+	public LevelParent(Game g) {
+		game = g;
 		createButtons(); // Create buttons for use in panels
 		this.setLayout(new BorderLayout()); // Set panel layout to BorderLayout
 		// Create border for panel
@@ -85,6 +92,7 @@ public abstract class LevelParent extends JPanel {
 		infoPane = createInfoPane(); // Create a generic infoPane
 
 		timer.schedule(new RemindTask(), 0, 1000); // Set the timer to update every second
+		gameRunning = true; //Allow game to start running
 	}
 
 	/**
@@ -153,7 +161,7 @@ public abstract class LevelParent extends JPanel {
 		}
 
 		timerPanel.setBackground(backgroundColor); // Set background colour
-
+		
 		return timerPanel; // Return completed panel
 	}
 
@@ -177,7 +185,7 @@ public abstract class LevelParent extends JPanel {
 	 * setButton sets the correct size for the buttons and modifies their
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
-	 * @param button The button which is to be styled and attached to an anction listener.
+	 * @param button The button which is to be styled and attached to an action listener.
 	 */
 	public void setButton(JButton button) {
 		// Set size
@@ -237,6 +245,7 @@ public abstract class LevelParent extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tempFrame.setVisible(false); // Hide frame when button is clicked
+				game.window.requestFocus();
 			}
 		});
 

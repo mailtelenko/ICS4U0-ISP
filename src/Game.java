@@ -47,7 +47,7 @@ public class Game extends JFrame {
 	/**
 	 * Creates a new Game object. Controls the flow of the program.
 	 * 
-	 * @param args
+	 * @param args Java command line arguments
 	 */
 	public static void main(String[] args) {
 		new Game(); // Create new instance of the Game class.

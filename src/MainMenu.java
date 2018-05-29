@@ -58,7 +58,7 @@ public class MainMenu extends MenuParent {
 	 * setButton sets the correct size for the buttons and modifies their
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
-	 * @param button
+	 * @param button The button to be styled and added an ActionListener to.
 	 */
 	public void setButton(JButton button) {
 		// Set size (Specific to mainMenu)

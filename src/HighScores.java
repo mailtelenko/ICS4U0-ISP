@@ -44,7 +44,7 @@ public class HighScores extends MenuParent {
 	/**
 	 * Class constructor set up the JPanel and stores the unparsed data in scores.
 	 * 
-	 * @param gme
+	 * @param gme The game refernce to be used by the object.
 	 */
 	public HighScores(Game gme) {
 		super(gme, "High Scores"); // Call to super with game object

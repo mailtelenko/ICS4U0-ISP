@@ -44,8 +44,8 @@ public abstract class MenuParent extends JPanel {
 	 * MenuParent class constructor creates a title and generic layout for use in
 	 * the program menus.
 	 * 
-	 * @param game
-	 * @param titleStr
+	 * @param game The game object to be referenced
+	 * @param titleStr The string to use as the title of the panel (top text)
 	 */
 	public MenuParent(Game game, String titleStr) {
 		window = game; // Set window variable to game object
@@ -84,6 +84,8 @@ public abstract class MenuParent extends JPanel {
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
 	 * @param button
+	 *            The button which will be styled and will have an action listener
+	 *            attached
 	 */
 	public void setButton(JButton button) {
 		// Set size
@@ -110,7 +112,7 @@ public abstract class MenuParent extends JPanel {
 	 * createCenterMenu generates a new JButton with the correct name and
 	 * actionListener.
 	 * 
-	 * @return
+	 * @return JButton correctly styled and ready for use.
 	 */
 	public JButton createCenterMenu() {
 		JButton menu = new JButton("Main Menu"); // Create new button
@@ -122,8 +124,8 @@ public abstract class MenuParent extends JPanel {
 	 * createCenterMenu creates a fills a JPanel with a mainMenu button properly
 	 * aligned and formatted.
 	 * 
-	 * @param panel
-	 * @return
+	 * @param panel The JPanel to add the menu button to
+	 * @return JButton which was added to the panel.
 	 */
 	public JButton createCenterMenu(JPanel panel) {
 		JButton menu = new JButton("Main Menu"); // Create mainMenu button
@@ -138,9 +140,9 @@ public abstract class MenuParent extends JPanel {
 	 * createDualButtons method adds two buttons to a JPanel in order to keep them
 	 * in line on the JFrame.
 	 * 
-	 * @param panel
-	 * @param button1
-	 * @param button2
+	 * @param panel The JPanel to add the buttons to
+	 * @param button1 JButton on the left of the dual button setup
+	 * @param button2 JButton on the right of the dual button setup
 	 */
 	public void createDualButtons(JPanel panel, JButton button1, JButton button2) {
 		JPanel flow = new JPanel(new FlowLayout()); // Create FlowLayout panel
