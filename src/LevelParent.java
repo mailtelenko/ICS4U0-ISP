@@ -39,8 +39,6 @@ public abstract class LevelParent extends JPanel {
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
 	Game game;
-	/** Reference to level name */
-	String levelName;
 	/** Dimensions for buttons */
 	Dimension buttonDimension = new Dimension(140, 32);
 	/** Buttons to be used in all levels */
@@ -84,9 +82,8 @@ public abstract class LevelParent extends JPanel {
 	 * @param g
 	 *            The game reference to be used by the object.
 	 */
-	public LevelParent(Game g, String l) {
+	public LevelParent(Game g) {
 		game = g;
-		levelName = l;
 		createButtons(); // Create buttons for use in panels
 		this.setLayout(new BorderLayout()); // Set panel layout to BorderLayout
 		// Create border for panel
@@ -291,7 +288,7 @@ public abstract class LevelParent extends JPanel {
 
 		// Create a new image
 		ImageIcon image = new ImageIcon(
-				new ImageIcon("resources/images/" + levelName + "/items/book.png").getImage().getScaledInstance(100, 100, 10));
+				new ImageIcon("resources/images/levelOne/items/book.png").getImage().getScaledInstance(100, 100, 10));
 		imageLabel = new JLabel("", image, JLabel.CENTER); // Put image in centred label
 		imageLabel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add padding to image
 
@@ -318,7 +315,7 @@ public abstract class LevelParent extends JPanel {
 		infoTitle.setText(data[0]); // Set title
 		infoContent.setText("<html>" + "<center>" + data[1] + "</center>" + "</html>"); // Set block text
 		// Create new image
-		imageLabel.setIcon(new ImageIcon(new ImageIcon("resources/images/" + levelName + "/items/" + data[0] + ".png").getImage()
+		imageLabel.setIcon(new ImageIcon(new ImageIcon("resources/images/levelOne/items/" + data[0] + ".png").getImage()
 				.getScaledInstance(100, 100, 10)));
 		infoPane.setVisible(true); // Set to visible
 	}
@@ -332,13 +329,13 @@ public abstract class LevelParent extends JPanel {
 	 *            The name of the current level to be matched to the correct file in
 	 *            resources/data.
 	 */
-	public void collectLocations() {
+	public void collectLocations(String levelName) {
 		String temp; // Empty temporary string
 		String tempData[] = { "", "", "", "", "", "" }; // Empty temporary array
 
 		try { // Read from file
 				// Open input from file
-			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/" + levelName + "/" + levelName + ".txt"));
+			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/levels/" + levelName + ".txt"));
 			// While there are no empty lines in the file add the lines to the ArrayList
 			while ((temp = dataIn.readLine()) != null) {
 
