@@ -77,7 +77,7 @@ public class Rules extends MenuParent {
 		JButton compare = (JButton) e.getSource(); // Cast the ActionEvent as a JButton
 		if (compare == menu) { // Check if the clicked button is the same object as menu button
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(game.mainMenu); // Add mainMenu to panels
+			game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
 		}
 		game.window.validate(); // Validate JFrame
 		game.window.repaint(); // Repaint JFrame

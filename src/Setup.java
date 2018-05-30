@@ -44,6 +44,8 @@ public class Setup extends MenuParent {
 	public Setup(Game gme) {
 		super(gme, "Setup"); // Call to parent with game object
 		game = gme; // Set object's game object
+		
+		game.resetClicks();
 
 		JPanel container = new JPanel(new GridBagLayout()); // Create container for text field
 
@@ -106,8 +108,9 @@ public class Setup extends MenuParent {
 				JOptionPane.showMessageDialog(game.window, "Please enter a name before continuing.", "Enter name",
 						JOptionPane.ERROR_MESSAGE); // Display error message to user
 			} else {
+				game.setName(name);
 				game.window.getContentPane().removeAll(); // Remove all panels from frame
-				game.window.getContentPane().add(new LevelTwo(game)); // Add level to frame
+				game.window.getContentPane().add(new LevelOne(game)); // Add level to frame
 			}
 		}
 		// Validate/repaint

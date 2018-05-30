@@ -74,6 +74,9 @@ public class Quiz extends MenuParent {
 
 		// Create questionLabel
 		questionLabel = new JLabel("Testing string", SwingConstants.CENTER);
+		questionLabel.setMinimumSize(new Dimension(750,200));
+		questionLabel.setPreferredSize(new Dimension(750,200));
+		questionLabel.setMaximumSize(new Dimension(750,200));
 
 		// Style questionLabel
 		questionLabel.setForeground(Color.WHITE); // Set text colour
@@ -238,7 +241,8 @@ public class Quiz extends MenuParent {
 	 *            The number to update the question to.
 	 */
 	public void changeQuestion(int number) {
-		questionLabel.setText(questions.get(number)[0]);
+		//Set label
+		questionLabel.setText("<html>" + "<center>" + questions.get(number)[0] + "</center>" + "</html>");
 	}
 
 	/**
@@ -307,8 +311,7 @@ public class Quiz extends MenuParent {
 		if (((JButton) e.getSource()).getText().equals(questions.get(currentQuestion)[1])) {
 			correctQuestions++; //Add one to correct answers
 		} else if (((JButton) e.getSource()) == continueBtn) { //Check if button is continue
-			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new LevelTwo(game)); // Add mainMenu to panels
+			System.out.println("to next level");
 			//Update JFrame
 			game.window.revalidate();
 			game.window.repaint();
