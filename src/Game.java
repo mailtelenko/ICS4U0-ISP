@@ -20,14 +20,12 @@ public class Game extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/** Panels for menus */
+	public MainMenu mainMenu;
 	/** JFrame */
 	public JFrame window;
 	/** Icon image for JFrame icon **/
 	ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
-	/** Total and correct amount of clicks */
-	private int totalClicks, correctClicks = 0;
-	/** Name of player */
-	private String name;
 
 	/**
 	 * {@link Game} constructor. Creates a new JFrame for the main game window and
@@ -35,39 +33,16 @@ public class Game extends JFrame {
 	 */
 	public Game() {
 		window = new JFrame("Cyber Case"); // Create JFrame window
-		SplashScreen splash = new SplashScreen(this, "Cyber Case");
+		mainMenu = new MainMenu(this); // Create MainMenu JPanel
 
 		// Setup JFrame
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Set default close operation
 		window.getContentPane().setBackground(new Color(18, 24, 59)); // Set background colour
 		window.setIconImage(iconImg.getImage()); // Set the icon image for the JFrame
-		window.getContentPane().add(splash); // Add mainMenu to window
+		window.getContentPane().add(mainMenu); // Add mainMenu to window
 		window.setSize(900, 700); // Set size
 		window.setLocationRelativeTo(null); // Position in the center
 		window.setVisible(true); // Display window
-	}
-	
-	public void addClick(boolean correct) {
-		if(correct)
-			correctClicks ++;
-		totalClicks ++;
-	}
-	
-	public void resetClicks() {
-		totalClicks = 0;
-		correctClicks = 0;
-	}
-	
-	public int getPercentClicks() {
-		return (int) (((double)correctClicks/(double)totalClicks) *100);
-	}
-	
-	public void setName(String n) {
-		name = n;
-	}
-	
-	public String getName() {
-		return name;
 	}
 
 	/**

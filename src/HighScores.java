@@ -155,7 +155,7 @@ public class HighScores extends MenuParent {
 		JButton compare = (JButton) e.getSource(); // Cast the ActionEvent as a JButton
 		if (compare == menu) { // Check if the clicked button is the same object as menu button
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
+			game.window.getContentPane().add(game.mainMenu); // Add mainMenu to panels
 		} else {
 			if (JOptionPane.showConfirmDialog(game.window, "Are you sure you want to erase all high scores?",
 					"Confirm Erase", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) { // Confirm erase
