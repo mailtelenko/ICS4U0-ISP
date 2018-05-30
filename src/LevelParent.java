@@ -39,10 +39,12 @@ public abstract class LevelParent extends JPanel {
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
 	Game game;
+	/** Reference to level name */
+	String levelName;
 	/** Dimensions for buttons */
 	Dimension buttonDimension = new Dimension(140, 32);
-	/** Creates menu button */
-	public JButton menu, gameContinue, replay, exitPanel;
+	/** Buttons to be used in all levels */
+	public JButton menu, gameContinue, replay, exitPanel, closeDescription;
 	/** Icon image for JFrame icon **/
 	ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
 	/** Background Colour */
@@ -79,10 +81,12 @@ public abstract class LevelParent extends JPanel {
 	 * LevelParent class constructor creates the buttons for use in both the main
 	 * JPanel (game.window) as well as the object information frame (infoPane).
 	 * 
-	 * @param g The game reference to be used by the object.
+	 * @param g
+	 *            The game reference to be used by the object.
 	 */
-	public LevelParent(Game g) {
+	public LevelParent(Game g, String l) {
 		game = g;
+		levelName = l;
 		createButtons(); // Create buttons for use in panels
 		this.setLayout(new BorderLayout()); // Set panel layout to BorderLayout
 		// Create border for panel
@@ -92,7 +96,6 @@ public abstract class LevelParent extends JPanel {
 		infoPane = createInfoPane(); // Create a generic infoPane
 
 		timer.schedule(new RemindTask(), 0, 1000); // Set the timer to update every second
-		gameRunning = true; //Allow game to start running
 	}
 
 	/**
@@ -114,7 +117,8 @@ public abstract class LevelParent extends JPanel {
 		 * timer runs out.
 		 */
 		public void run() {
-			timeRem--; // Subtract one from time remaining
+			if (gameRunning)
+				timeRem--; // Subtract one from time remaining
 			if (timeRem < 0) { // If there is no time remaining
 				finishGame(false); // End game (lose)
 			} else { // Time still remaining
@@ -152,7 +156,7 @@ public abstract class LevelParent extends JPanel {
 		// Attempt to create a new custom font
 		try {
 			pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/VT323-Regular.ttf"))
-					.deriveFont(25f); // Set font
+					.deriveFont(29f); // Set font
 			timerLabel.setFont(pixelFont); // Add font to label
 		} catch (FontFormatException e) { // Catch exception
 			e.printStackTrace();
@@ -161,7 +165,7 @@ public abstract class LevelParent extends JPanel {
 		}
 
 		timerPanel.setBackground(backgroundColor); // Set background colour
-		
+
 		return timerPanel; // Return completed panel
 	}
 
@@ -185,7 +189,9 @@ public abstract class LevelParent extends JPanel {
 	 * setButton sets the correct size for the buttons and modifies their
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
-	 * @param button The button which is to be styled and attached to an action listener.
+	 * @param button
+	 *            The button which is to be styled and attached to an action
+	 *            listener.
 	 */
 	public void setButton(JButton button) {
 		// Set size
@@ -212,9 +218,13 @@ public abstract class LevelParent extends JPanel {
 	 * createDualButtons method adds two buttons to a JPanel in order to keep them
 	 * in line on the JFrame.
 	 * 
-	 * @param panel The panel to be added to (The new FlowLayout containing the buttons).
-	 * @param button1 The first button to be added to the FlowLayout (Left).
-	 * @param button2 The second button to be added to the FlowLayout (Right).
+	 * @param panel
+	 *            The panel to be added to (The new FlowLayout containing the
+	 *            buttons).
+	 * @param button1
+	 *            The first button to be added to the FlowLayout (Left).
+	 * @param button2
+	 *            The second button to be added to the FlowLayout (Right).
 	 */
 	public void createDualButtons(JPanel panel, JButton button1, JButton button2) {
 		JPanel flow = new JPanel(new FlowLayout()); // Create FlowLayout panel
@@ -281,7 +291,7 @@ public abstract class LevelParent extends JPanel {
 
 		// Create a new image
 		ImageIcon image = new ImageIcon(
-				new ImageIcon("resources/images/levelOne/items/book.png").getImage().getScaledInstance(100, 100, 10));
+				new ImageIcon("resources/images/" + levelName + "/items/book.png").getImage().getScaledInstance(100, 100, 10));
 		imageLabel = new JLabel("", image, JLabel.CENTER); // Put image in centred label
 		imageLabel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add padding to image
 
@@ -301,13 +311,14 @@ public abstract class LevelParent extends JPanel {
 	 * showInfoPane sets the content of the infoPane and then displays it to the
 	 * user.
 	 * 
-	 * @param data The title and content to be displayed in the panel.
+	 * @param data
+	 *            The title and content to be displayed in the panel.
 	 */
 	public void showInfoPane(String[] data) {
 		infoTitle.setText(data[0]); // Set title
 		infoContent.setText("<html>" + "<center>" + data[1] + "</center>" + "</html>"); // Set block text
 		// Create new image
-		imageLabel.setIcon(new ImageIcon(new ImageIcon("resources/images/levelOne/items/" + data[0] + ".png").getImage()
+		imageLabel.setIcon(new ImageIcon(new ImageIcon("resources/images/" + levelName + "/items/" + data[0] + ".png").getImage()
 				.getScaledInstance(100, 100, 10)));
 		infoPane.setVisible(true); // Set to visible
 	}
@@ -317,15 +328,17 @@ public abstract class LevelParent extends JPanel {
 	 * String arrays. The method also initialises the locationFound ArrayList to
 	 * false.
 	 * 
-	 * @param levelName The name of the current level to be matched to the correct file in resources/data.
+	 * @param levelName
+	 *            The name of the current level to be matched to the correct file in
+	 *            resources/data.
 	 */
-	public void collectLocations(String levelName) {
+	public void collectLocations() {
 		String temp; // Empty temporary string
 		String tempData[] = { "", "", "", "", "", "" }; // Empty temporary array
 
 		try { // Read from file
 				// Open input from file
-			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/levels/" + levelName + ".txt"));
+			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/" + levelName + "/" + levelName + ".txt"));
 			// While there are no empty lines in the file add the lines to the ArrayList
 			while ((temp = dataIn.readLine()) != null) {
 
@@ -359,8 +372,9 @@ public abstract class LevelParent extends JPanel {
 	 * panel. The dots represent which objects have been found/still need to be
 	 * found to proceed in the level.
 	 * 
-	 * @return JPanel complete with the updated object counter comprising of red and green dots.
-	 * A red dot represents a still unfound object, green dots represent found objects.
+	 * @return JPanel complete with the updated object counter comprising of red and
+	 *         green dots. A red dot represents a still unfound object, green dots
+	 *         represent found objects.
 	 */
 	public JPanel updateObjectCounter() {
 		JPanel container = new JPanel(new FlowLayout()); // Create new JPanel (container)
@@ -391,6 +405,70 @@ public abstract class LevelParent extends JPanel {
 		container.setBackground(backgroundColor); // Set background colour
 		return container; // Return JPanel
 	}
+
+	/**
+	 * createIntroduction creates a JPanel complete with a description read from a
+	 * text file.
+	 * 
+	 * @param level The level number (string) to be created.
+	 * @return JPanel complete with description, title, and start game button.
+	 */
+	public JPanel createIntroduction(String level) {
+		//JPanel containers
+		JPanel container = new JPanel(new BorderLayout());
+		JPanel buttonContainer = new JPanel(new FlowLayout());
+		JLabel description = new JLabel();
+		//Title label
+		JLabel title = new JLabel("Level " + level + " Description", SwingConstants.CENTER);
+
+		//Create JButton
+		closeDescription = new JButton("Start Game");
+
+		//Get description
+		try { // Read from file
+				// Open input from file
+			BufferedReader dataIn = new BufferedReader(
+					new FileReader("resources/data/levels/level" + level + "Description.txt"));
+			// While there are no empty lines in the file add the lines to the ArrayList
+			description.setText("<html>" + "<center>" + dataIn.readLine() + "</center>" + "</html>");
+			dataIn.close(); // Close connection to file
+		} catch (Exception e) { // Catch exception
+			System.out.println(e); // Print out exception
+		}
+
+		//Set fonts
+		title.setFont(pixelFont);
+		description.setFont(new Font("Cambria Math", Font.PLAIN, 14));
+
+		//Set borders
+		title.setBorder(new EmptyBorder(50, 50, 50, 50));
+		description.setBorder(new EmptyBorder(50, 50, 50, 50));
+		container.setBorder(new CompoundBorder(new LineBorder(Color.BLACK, 6), new EmptyBorder(10, 10, 10, 10)));
+
+		//Set button (style + action listener)
+		setButton(closeDescription);
+
+		//Set foreground (text) colours
+		title.setForeground(Color.WHITE);
+		description.setForeground(Color.WHITE);
+		
+		//Set background colours
+		buttonContainer.setBackground(Color.decode("#402644"));
+		container.setBackground(Color.decode("#402644"));
+
+		//Add elements to panels
+		buttonContainer.add(closeDescription); //Button panel
+		container.add(title, BorderLayout.NORTH); //Container panel
+		container.add(description, BorderLayout.CENTER); //Container panel
+		container.add(buttonContainer, BorderLayout.SOUTH); //Container panel
+		
+		return container; //Return panel
+	}
+
+	/**
+	 * startGame adds the correct game element to the screen and starts the timer.
+	 */
+	public abstract void startGame();
 
 	/**
 	 * buttonClicked checks if mainMenu button is clicked

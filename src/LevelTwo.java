@@ -23,14 +23,14 @@ import javax.swing.border.LineBorder;
  * @version 0.2
  * @author Liam Telenko and Russell Leong
  */
-public class LevelOne extends LevelParent {
+public class LevelTwo extends LevelParent {
 
 	/** Verify sender/receiver of object. */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
 	Game game;
 	/** This object */
-	LevelOne firstLevel = this;
+	LevelTwo secondLevel = this;
 	/** The container for the game image */
 	JPanel imagePanel;
 
@@ -40,8 +40,8 @@ public class LevelOne extends LevelParent {
 	 * @param gme
 	 *            To create a reference to the Game class.
 	 */
-	public LevelOne(Game gme) {
-		super(gme, "levelOne");
+	public LevelTwo(Game gme) {
+		super(gme, "levelTwo");
 		game = gme; // Set reference to game object
 
 		// JPanel to centre and house game image
@@ -49,7 +49,7 @@ public class LevelOne extends LevelParent {
 
 		// Create game image
 		ImageIcon gameImage = new ImageIcon(
-				new ImageIcon("resources/images/levelOne/LevelOne.jpg").getImage().getScaledInstance(750, 500, 10));
+				new ImageIcon("resources/images/levelTwo/LevelTwo.jpg").getImage().getScaledInstance(750, 500, 10));
 		JLabel gameImageLabel = new JLabel("", gameImage, JLabel.CENTER); // Centre in JLabel
 
 		// Style image
@@ -87,10 +87,10 @@ public class LevelOne extends LevelParent {
 						showInfoPane(new String[] { location[0], location[5] });
 						locationFound.set(count, true); // Set object to found
 						// Remove previous panel from SOUTH border layout
-						BorderLayout layout = (BorderLayout) firstLevel.getLayout();
-						firstLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
+						BorderLayout layout = (BorderLayout) secondLevel.getLayout();
+						secondLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 						// Add to JPanel
-						firstLevel.add(updateObjectCounter(), BorderLayout.SOUTH);
+						secondLevel.add(updateObjectCounter(), BorderLayout.SOUTH);
 						return;
 					}
 					count++; // Add to count
@@ -135,7 +135,7 @@ public class LevelOne extends LevelParent {
 		collectLocations(); // Collect data from file
 
 		// Add to JPanel
-		add(createIntroduction("One"), BorderLayout.CENTER); // Add description
+		add(createIntroduction("Two"), BorderLayout.CENTER); // Add description
 		add(updateObjectCounter(), BorderLayout.SOUTH); // Add object counter
 	}
 
@@ -163,8 +163,8 @@ public class LevelOne extends LevelParent {
 		if (win)
 			createDualButtons(this, menu, gameContinue);
 		else {
-			BorderLayout layout = (BorderLayout) firstLevel.getLayout();
-			firstLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
+			BorderLayout layout = (BorderLayout) secondLevel.getLayout();
+			secondLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 			createDualButtons(this, menu, replay);
 		}
 		game.window.validate();
@@ -186,7 +186,7 @@ public class LevelOne extends LevelParent {
 			game.window.getContentPane().add(game.mainMenu); // Add mainMenu to panels
 		} else if (compare == replay) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new LevelOne(game)); // Add mainMenu to panels
+			game.window.getContentPane().add(new LevelTwo(game)); // Add mainMenu to panels
 		} else if (compare == gameContinue) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels

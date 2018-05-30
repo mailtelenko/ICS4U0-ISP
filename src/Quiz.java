@@ -249,7 +249,7 @@ public class Quiz extends MenuParent {
 		JPanel buttonCont = new JPanel(new FlowLayout()); //JPanel for button
 		//Label for the percentage of correct answers
 		JLabel percent = new JLabel("<html>" + "<center>You correctly answered "
-				+ (int) ((double) correctQuestions / (double) questionUsed.size()) * 100
+				+ (int) (((double) correctQuestions / (double) questionUsed.size()) * 100)
 				+ "% of the questions.</center>", SwingConstants.CENTER);
 		//Label for explanation of why they cannot proceed.
 		JLabel explanation = new JLabel(
@@ -307,7 +307,8 @@ public class Quiz extends MenuParent {
 		if (((JButton) e.getSource()).getText().equals(questions.get(currentQuestion)[1])) {
 			correctQuestions++; //Add one to correct answers
 		} else if (((JButton) e.getSource()) == continueBtn) { //Check if button is continue
-			System.out.println("to next level");
+			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
+			game.window.getContentPane().add(new LevelTwo(game)); // Add mainMenu to panels
 			//Update JFrame
 			game.window.revalidate();
 			game.window.repaint();

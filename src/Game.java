@@ -3,6 +3,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+
 /**
  * The main Game class for Cyber Case. Controls program flow and JFrame.
  * 
@@ -47,7 +48,8 @@ public class Game extends JFrame {
 	/**
 	 * Creates a new Game object. Controls the flow of the program.
 	 * 
-	 * @param args Java command line arguments
+	 * @param args
+	 *            Java command line arguments
 	 */
 	public static void main(String[] args) {
 		new Game(); // Create new instance of the Game class.
