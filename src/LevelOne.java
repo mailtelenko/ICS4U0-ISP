@@ -41,7 +41,7 @@ public class LevelOne extends LevelParent {
 	 *            To create a reference to the Game class.
 	 */
 	public LevelOne(Game gme) {
-		super(gme);
+		super(gme, "levelOne");
 		game = gme; // Set reference to game object
 
 		// JPanel to centre and house game image
@@ -72,6 +72,10 @@ public class LevelOne extends LevelParent {
 			 * gameImageLabel
 			 */
 			public void mouseClicked(java.awt.event.MouseEvent e) {
+				System.out.println("Mouse clicked");
+				System.out.print("X and Y coords: ");
+				System.out.print(e.getX() + ", ");
+				System.out.println(e.getY());
 				int count = 0; // Counts the amount of objects in the room
 				for (String[] location : locations) { // Iterate over all objects in the room
 					// Check if the coordinates of the mouse click are within the dimensions of the
@@ -87,12 +91,10 @@ public class LevelOne extends LevelParent {
 						firstLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 						// Add to JPanel
 						firstLevel.add(updateObjectCounter(), BorderLayout.SOUTH);
-						game.addClick(true);
 						return;
 					}
 					count++; // Add to count
 				}
-				game.addClick(false);
 			}
 
 			/**
@@ -130,7 +132,7 @@ public class LevelOne extends LevelParent {
 
 		imagePanel.setBackground(backgroundColor); // Set background colour
 
-		collectLocations("levelOne"); // Collect data from file
+		collectLocations(); // Collect data from file
 
 		// Add to JPanel
 		add(createIntroduction("One"), BorderLayout.CENTER); // Add description
@@ -143,8 +145,8 @@ public class LevelOne extends LevelParent {
 	 */
 	public void startGame() {
 		remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER)); // Remove description
-		add(imagePanel, BorderLayout.CENTER); //Add game image
-		gameRunning = true; //Start timer
+		add(imagePanel, BorderLayout.CENTER); // Add game image
+		gameRunning = true; // Start timer
 	}
 
 	/**
@@ -165,7 +167,6 @@ public class LevelOne extends LevelParent {
 			firstLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 			createDualButtons(this, menu, replay);
 		}
-		System.out.println("Click ratio:" + game.getPercentClicks() + "%");
 		game.window.validate();
 		game.window.repaint();
 	}

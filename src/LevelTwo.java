@@ -183,7 +183,7 @@ public class LevelTwo extends LevelParent {
 		JButton compare = (JButton) e.getSource(); // Cast the ActionEvent as a JButton
 		if (compare == menu) { // Check if the clicked button is the same object as menu button
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(game.mainMenu); // Add mainMenu to panels
+			game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
 		} else if (compare == replay) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new LevelTwo(game)); // Add mainMenu to panels

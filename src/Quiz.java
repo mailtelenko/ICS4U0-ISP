@@ -311,7 +311,11 @@ public class Quiz extends MenuParent {
 		if (((JButton) e.getSource()).getText().equals(questions.get(currentQuestion)[1])) {
 			correctQuestions++; //Add one to correct answers
 		} else if (((JButton) e.getSource()) == continueBtn) { //Check if button is continue
-			System.out.println("to next level");
+			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
+			if(level == 1)
+				game.window.getContentPane().add(new LevelTwo(game)); // Add new MainMenu panel to JFrame
+			else if (level == 2)
+				game.window.getContentPane().add(new MainMenu(game)); // Add new MainMenu panel to JFrame
 			//Update JFrame
 			game.window.revalidate();
 			game.window.repaint();
