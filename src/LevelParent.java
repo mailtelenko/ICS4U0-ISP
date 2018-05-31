@@ -428,7 +428,7 @@ public abstract class LevelParent extends JPanel {
 		try { // Read from file
 				// Open input from file
 			BufferedReader dataIn = new BufferedReader(
-					new FileReader("resources/data/levels/level" + level + "Description.txt"));
+					new FileReader("resources/data/level" + level + "/level" + level + "Description.txt"));
 			// While there are no empty lines in the file add the lines to the ArrayList
 			description.setText("<html>" + "<center>" + dataIn.readLine() + "</center>" + "</html>");
 			dataIn.close(); // Close connection to file

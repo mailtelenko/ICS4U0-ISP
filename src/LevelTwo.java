@@ -14,8 +14,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 /**
- * The LevelOne class extends LevelParent and is the first level in a series of
- * three. The level focuses on mental health and the affects it has on
+ * The LevelTwo class extends LevelParent and is the second level in a series of
+ * three. The level focuses on physical health and the effects it has on
  * individuals.
  * 
  * <h2>Course Info:</h2> ICS4U0 with Krasteva, V.
@@ -35,7 +35,7 @@ public class LevelTwo extends LevelParent {
 	JPanel imagePanel;
 
 	/**
-	 * LevelOne class constructor sets the game reference to the game object.
+	 * LevelTwo class constructor sets the game reference to the game object.
 	 * 
 	 * @param gme
 	 *            To create a reference to the Game class.
@@ -140,13 +140,13 @@ public class LevelTwo extends LevelParent {
 	}
 
 	/**
-	 * startGame removes the introduction and replaces it with the game image. It
-	 * also starts the timer.
+	 * startGame removes the introduction and replaces it with the game image. 
+	 * It also starts the timer.
 	 */
 	public void startGame() {
 		remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER)); // Remove description
-		add(imagePanel, BorderLayout.CENTER); //Add game image
-		gameRunning = true; //Start timer
+		add(imagePanel, BorderLayout.CENTER); // Add game image
+		gameRunning = true; // Start timer
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class LevelTwo extends LevelParent {
 			game.window.getContentPane().add(new LevelTwo(game)); // Add mainMenu to panels
 		} else if (compare == gameContinue) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels
+			game.window.getContentPane().add(new Quiz(game, 2)); // Add mainMenu to panels
 		} else if (compare == closeDescription) {
 			startGame();
 		}

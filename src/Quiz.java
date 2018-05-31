@@ -17,7 +17,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 /**
- * The parent for all menu panels for the program.
+ * The creates a quiz panel with working buttons and questions. Will not allow
+ * user to proceed if their score is less than 75%.
  * 
  * <h2>Course Info:</h2> ICS4U0 - Ms.Krasteva
  *
@@ -27,9 +28,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class Quiz extends MenuParent {
 
-	/**
-	 * Verify sender/receiver of object
-	 */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
 	/** The level which created the quiz object */
 	int level;
@@ -45,11 +44,12 @@ public class Quiz extends MenuParent {
 	JLabel questionLabel;
 	/** Wrapper panel to be updated by multiple methods */
 	JPanel wrapper;
+	/** JPanel to house buttons */
+	JPanel buttonContainer;
 
 	/** ArrayLists to store data being used in the quiz */
 	ArrayList<String[]> questions = new ArrayList<String[]>();
-	ArrayList<JButton> buttons = new ArrayList<JButton>();
-	ArrayList<Boolean> questionUsed = new ArrayList<Boolean>();
+	ArrayList<JButton[]> buttons = new ArrayList<JButton[]>();
 
 	/**
 	 * The Quiz constructor correctly lays out a new JPanel (super call to
@@ -70,21 +70,27 @@ public class Quiz extends MenuParent {
 		// JPanel creation
 		JPanel container = new JPanel(new GridBagLayout());
 		JPanel questionContainer = new JPanel();
+
 		wrapper = new JPanel(new BorderLayout());
 
 		// Create questionLabel
 		questionLabel = new JLabel("Testing string", SwingConstants.CENTER);
-		questionLabel.setMinimumSize(new Dimension(750,200));
-		questionLabel.setPreferredSize(new Dimension(750,200));
-		questionLabel.setMaximumSize(new Dimension(750,200));
+		questionLabel.setMinimumSize(new Dimension(750, 200));
+		questionLabel.setPreferredSize(new Dimension(750, 200));
+		questionLabel.setMaximumSize(new Dimension(750, 200));
 
 		// Style questionLabel
 		questionLabel.setForeground(Color.WHITE); // Set text colour
 		questionLabel.setFont((new Font("Cambria Math", Font.PLAIN, 20))); // Set font
-		questionLabel.setBorder(new EmptyBorder(20,10,20,10));
+		questionLabel.setBorder(new EmptyBorder(20, 10, 20, 10));
 
 		// Fill questions ArrayList from data (parsed)
-		fillQuestions();
+		if (l == 1)
+			fillQuestions("levelOne");
+		else if (l == 2)
+			fillQuestions("levelTwo");
+		else if (l == 3)
+			fillQuestions("levelThree");
 
 		questionContainer.setBackground(backgroundColor); // Set background colour of questionContainer
 		questionContainer.add(questionLabel); // Add questionLabel to questionContainer
@@ -102,7 +108,7 @@ public class Quiz extends MenuParent {
 
 		add(wrapper); // Add wrapper to JPanel
 
-		chooseQuestion(); // Choose first question
+		changeQuestion(-1); // Set question to 0 (will add one in method)
 	}
 
 	/**
@@ -110,26 +116,18 @@ public class Quiz extends MenuParent {
 	 * and then adds the parsed data correctly to an ArrayList for use in the Quiz
 	 * object.
 	 */
-	public void fillQuestions() {
+	public void fillQuestions(String levelName) {
 		String temp; // Empty temporary string
-		String[] tempArray = new String[] { "", "" }; // Empty temporary array
 
 		try { // Read from file
 				// Open input from file
 			BufferedReader dataIn = new BufferedReader(
-					new FileReader("resources/data/levels/level" + level + "Quiz.txt"));
+					new FileReader("resources/data/" + levelName + "/level" + level + "Quiz.txt"));
 			// While there are no empty lines in the file add the lines to the ArrayList
 			while ((temp = dataIn.readLine()) != null) {
-				// Check if the first character is a '/'
-				if (!temp.substring(0, 1).equals("/")) {
-					tempArray[0] = temp.substring(0, temp.indexOf("/")); // Parse button
-					tempArray[1] = temp.substring(temp.indexOf("/") + 1); // Parse question
-					questions.add(new String[] { tempArray[0], tempArray[1] }); // Add to ArrayList
-				} else { // If first character is '/'
-					// Create 'fake' (no answer linked) button
-					buttons.add(0, new JButton(temp.substring(1))); // Add to buttons (first element in ArrayList)
-					setButton(buttons.get(0)); // Set button
-				}
+				// Add to ArrayList
+				questions.add(
+						new String[] { temp.substring(0, temp.indexOf("/")), temp.substring(temp.indexOf("/") + 1) });
 			}
 			dataIn.close(); // Close connection to file
 		} catch (Exception e) { // Catch exception
@@ -145,64 +143,64 @@ public class Quiz extends MenuParent {
 	 */
 	public JPanel createButtons() {
 		// Create JPanels
-		JPanel container = new JPanel(new FlowLayout());
+		buttonContainer = new JPanel(new FlowLayout());
 		JPanel centredPanel = new JPanel(new GridBagLayout());
 
-		container.setBackground(backgroundColor); // Set background colour of JPanel
+		// Temporary variables for parsing
+		String temp;
+		ArrayList<JButton> tempArray;
+		JButton[] buttonArray;
+
+		buttonContainer.setBackground(backgroundColor); // Set background colour of JPanel
 
 		// For loop to iterate through all questions to add buttons
 		for (int x = 0; x < questions.size(); x++) {
-			buttons.add(x, new JButton(questions.get(x)[1])); // Add new button to ArrayList
-			setButton(buttons.get(x)); // Set button
-			questionUsed.add(false); // Create questionUsed value for answer.
-		}
+			int count = 0; // Set counter to 0
+			tempArray = new ArrayList<JButton>(); // Initialize tempArray
+			temp = questions.get(x)[1]; // Get the current question
 
-		// Shuffle buttons ArrayList
-		java.util.Collections.shuffle(buttons);
+			// Run while temp is not null
+			while (temp != null) {
+				if (temp.indexOf('/') != -1) { // Check if there is a '/' in the string
+					// Add to tempArray (create JButton)
+					tempArray.add(new JButton(temp.substring(0, temp.indexOf('/'))));
+					temp = temp.substring(temp.indexOf('/') + 1); // Update temp string
+				} else {
+					// Add JButton of just temp (no parsing)
+					tempArray.add(new JButton(temp));
+					temp = null; // Set temp to null
+				}
+				// Set button (styling/ActionListener)
+				setButton(tempArray.get(count));
+				count++; // Add to count
+			}
 
-		// Iterate over all buttons
-		for (int x = 0; x < buttons.size(); x++) {
-			container.add(buttons.get(x)); // Add button to container
+			// Set the question and answer
+			questions.set(x, new String[] { questions.get(x)[0], tempArray.get(0).getText() });
+
+			// Shuffle buttons ArrayList
+			java.util.Collections.shuffle(tempArray);
+
+			// Create array of correct length
+			buttonArray = new JButton[tempArray.size()];
+
+			// Add each element from ArrayList to array
+			for (int y = 0; y < tempArray.size(); y++) {
+				buttonArray[y] = tempArray.get(y);
+			}
+
+			// Add array to buttons ArrayList
+			buttons.add(buttonArray);
 		}
 
 		// Set dimensions based off rows
-		container.setMinimumSize(new Dimension(700, 150 * (questions.size() / 4)));
-		container.setPreferredSize(new Dimension(700, 150 * (questions.size() / 4)));
-		container.setMaximumSize(new Dimension(700, 150 * (questions.size() / 4)));
+		buttonContainer.setMinimumSize(new Dimension(700, 150 * (questions.size() / 4)));
+		buttonContainer.setPreferredSize(new Dimension(700, 150 * (questions.size() / 4)));
+		buttonContainer.setMaximumSize(new Dimension(700, 150 * (questions.size() / 4)));
 
 		// Add container to centred panel
-		centredPanel.add(container);
+		centredPanel.add(buttonContainer);
 		return centredPanel; // Return to JPanel
-	}
-
-	/**
-	 * chooseQuestion finds a new, unused question to present to the user.
-	 */
-	public void chooseQuestion() {
-		Boolean[] questionsChecked = new Boolean[questionUsed.size()]; // Array of used questions
-		int checked = 0; // Amount of questions checked.
-		int temp; // Temporary variable
-
-		// Initialise questionsChecked to false.
-		for (int x = 0; x < questionsChecked.length; x++)
-			questionsChecked[x] = false;
-
-		// Do-while to run every scenario (every question checked randomly)
-		do {
-			temp = (int) (Math.random() * (questionUsed.size())); // Set temp int to new question number (random)
-			if (questionUsed.get(temp)) { // Check if that question has been used
-				if (!questionsChecked[temp]) { // Add to checked amount and set to true if not already
-					checked++; // Add one
-					questionsChecked[temp] = true; // Set true
-				}
-			} else { // Question hasn't been used
-				changeQuestion(temp); // Change the current question to the new question
-				questionUsed.set(temp, true); // Set the new question to used
-				currentQuestion = temp; // Update currentQuestion
-				return; // Exit loop
-			}
-		} while (checked < questionUsed.size()); // While there are still elements left in the loop
-		endQuiz(); // End quiz if no questions remain
 	}
 
 	/**
@@ -241,8 +239,17 @@ public class Quiz extends MenuParent {
 	 *            The number to update the question to.
 	 */
 	public void changeQuestion(int number) {
-		//Set label
-		questionLabel.setText("<html>" + "<center>" + questions.get(number)[0] + "</center>" + "</html>");
+		// Set label
+		if (number + 1 >= questions.size()) {
+			endQuiz();
+			return;
+		}
+		currentQuestion = number + 1;
+		questionLabel.setText("<html>" + "<center>" + questions.get(currentQuestion)[0] + "</center>" + "</html>");
+		buttonContainer.removeAll();
+		for (int x = 0; x < buttons.get(currentQuestion).length; x++) {
+			buttonContainer.add(buttons.get(currentQuestion)[x]);
+		}
 	}
 
 	/**
@@ -250,50 +257,50 @@ public class Quiz extends MenuParent {
 	 * controls where the user can proceed to next.
 	 */
 	public void endQuiz() {
-		JPanel buttonCont = new JPanel(new FlowLayout()); //JPanel for button
-		//Label for the percentage of correct answers
+		JPanel buttonCont = new JPanel(new FlowLayout()); // JPanel for button
+		// Label for the percentage of correct answers
 		JLabel percent = new JLabel("<html>" + "<center>You correctly answered "
-				+ (int) (((double) correctQuestions / (double) questionUsed.size()) * 100)
+				+ (int) (((double) correctQuestions / (double) questions.size()) * 100)
 				+ "% of the questions.</center>", SwingConstants.CENTER);
-		//Label for explanation of why they cannot proceed.
+		// Label for explanation of why they cannot proceed.
 		JLabel explanation = new JLabel(
 				"<html>" + "<center>You correctly answered "
-						+ (int) (((double) correctQuestions / (double) questionUsed.size()) * 100)
+						+ (int) (((double) correctQuestions / (double) questions.size()) * 100)
 						+ "% of the questions.<br/>A 75% or greater is required to proceed.</center>" + "</html>",
 				SwingConstants.CENTER);
 
-		//Set buttons
-		menu = new JButton("Main Menu"); //Create menu button
-		continueBtn = new JButton("Continue"); //Create continue button
-		super.setButton(continueBtn); //Set continue button
-		super.setButton(menu); //Set menu button
+		// Set buttons
+		menu = new JButton("Main Menu"); // Create menu button
+		continueBtn = new JButton("Continue"); // Create continue button
+		super.setButton(continueBtn); // Set continue button
+		super.setButton(menu); // Set menu button
 
-		//Set labels
-		percent.setFont(new Font("Cambria Math", Font.PLAIN, 30)); //Set font size
-		percent.setForeground(Color.WHITE); //Set colour
-		explanation.setFont(new Font("Cambria Math", Font.PLAIN, 20)); //Set font size
-		explanation.setForeground(Color.WHITE); //Set colour
+		// Set labels
+		percent.setFont(new Font("Cambria Math", Font.PLAIN, 30)); // Set font size
+		percent.setForeground(Color.WHITE); // Set colour
+		explanation.setFont(new Font("Cambria Math", Font.PLAIN, 20)); // Set font size
+		explanation.setForeground(Color.WHITE); // Set colour
 
-		//Remove all elements from wrapper panel
+		// Remove all elements from wrapper panel
 		wrapper.removeAll();
-		//Add percent to wrapper panel
+		// Add percent to wrapper panel
 		wrapper.add(percent, BorderLayout.CENTER);
 
-		//If the user has lost the quiz (< 75%) display the explanation JLabel
-		if (((double) correctQuestions / (double) questionUsed.size()) < 0.75) {
-			wrapper.add(explanation, BorderLayout.CENTER); //Replace percent label w/ explanation label
-			buttonCont.add(menu); //Add main menu button to buttonCont
+		// If the user has lost the quiz (< 75%) display the explanation JLabel
+		if (((double) correctQuestions / (double) questions.size()) < 0.75) {
+			wrapper.add(explanation, BorderLayout.CENTER); // Replace percent label w/ explanation label
+			buttonCont.add(menu); // Add main menu button to buttonCont
 		} else {
-			buttonCont.add(continueBtn); //Add continue button to buttonCont
+			buttonCont.add(continueBtn); // Add continue button to buttonCont
 		}
 
-		//Set background colour
+		// Set background colour
 		buttonCont.setBackground(backgroundColor);
 
-		//Add to wrapper
+		// Add to wrapper
 		wrapper.add(buttonCont, BorderLayout.SOUTH);
-		
-		//Update panel
+
+		// Update panel
 		wrapper.revalidate();
 		wrapper.repaint();
 
@@ -307,26 +314,26 @@ public class Quiz extends MenuParent {
 	 *            Checks if an ActionEvent is made on the button.
 	 */
 	public void buttonClicked(ActionEvent e) {
-		//Check if title of button matches the current question answers
+		// Check if title of button matches the current question answers
 		if (((JButton) e.getSource()).getText().equals(questions.get(currentQuestion)[1])) {
-			correctQuestions++; //Add one to correct answers
-		} else if (((JButton) e.getSource()) == continueBtn) { //Check if button is continue
+			correctQuestions++; // Add one to correct answers
+			changeQuestion(currentQuestion); // Choose a new question to display
+		} else if (((JButton) e.getSource()) == continueBtn) { // Check if button is continue
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			if(level == 1)
+			if (level == 1)
 				game.window.getContentPane().add(new LevelTwo(game)); // Add new MainMenu panel to JFrame
 			else if (level == 2)
 				game.window.getContentPane().add(new MainMenu(game)); // Add new MainMenu panel to JFrame
-			//Update JFrame
+			// Update JFrame
 			game.window.revalidate();
 			game.window.repaint();
-		} else if (((JButton) e.getSource()) == menu) { //Check if button is main menu
+		} else if (((JButton) e.getSource()) == menu) { // Check if button is main menu
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new MainMenu(game)); // Add new MainMenu panel to JFrame
-			//Update JFrame
+			// Update JFrame
 			game.window.revalidate();
 			game.window.repaint();
 		}
-		chooseQuestion(); //Choose a new question to display
 	}
 
 }

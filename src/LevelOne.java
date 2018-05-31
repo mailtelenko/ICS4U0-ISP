@@ -15,7 +15,7 @@ import javax.swing.border.LineBorder;
 
 /**
  * The LevelOne class extends LevelParent and is the first level in a series of
- * three. The level focuses on mental health and the affects it has on
+ * three. The level focuses on mental health and the effects it has on
  * individuals.
  * 
  * <h2>Course Info:</h2> ICS4U0 with Krasteva, V.
@@ -44,13 +44,13 @@ public class LevelOne extends LevelParent {
 		super(gme, "levelOne");
 		game = gme; // Set reference to game object
 
-		// JPanel to centre and house game image
+		// JPanel to center and house game image
 		imagePanel = new JPanel(new GridBagLayout());
 
 		// Create game image
 		ImageIcon gameImage = new ImageIcon(
 				new ImageIcon("resources/images/levelOne/LevelOne.jpg").getImage().getScaledInstance(750, 500, 10));
-		JLabel gameImageLabel = new JLabel("", gameImage, JLabel.CENTER); // Centre in JLabel
+		JLabel gameImageLabel = new JLabel("", gameImage, JLabel.CENTER); // Center in JLabel
 
 		// Style image
 		gameImageLabel
@@ -83,7 +83,7 @@ public class LevelOne extends LevelParent {
 					if (Double.parseDouble(location[1]) <= e.getX() && Double.parseDouble(location[2]) >= e.getX()
 							&& Double.parseDouble(location[3]) <= e.getY()
 							&& Double.parseDouble(location[4]) >= e.getY() && gameRunning) {
-						// Show info panel popup
+						// Show info panel pop-up
 						showInfoPane(new String[] { location[0], location[5] });
 						locationFound.set(count, true); // Set object to found
 						// Remove previous panel from SOUTH border layout
@@ -140,8 +140,8 @@ public class LevelOne extends LevelParent {
 	}
 
 	/**
-	 * startGame removes the introduction and replaces it with the game image. It
-	 * also starts the timer.
+	 * startGame removes the introduction and replaces it with the game image. 
+	 * It also starts the timer.
 	 */
 	public void startGame() {
 		remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER)); // Remove description

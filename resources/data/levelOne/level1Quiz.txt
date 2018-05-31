@@ -1,9 +1,5 @@
-Which condition is Josh most likely facing?/Depression (unmotivated)
-What percent of the Canadian population experiences mental health issues per year?/20%
-Which is a common characteristic of the mental health issue Josh is facing?/Tiredness
-What a main cause of Josh's mental health issue?/Excessive stress
-Based on what you've learned, what do you think you should do to help Josh with this mental health issue?/Establish a support group
-/10%
-/Low appetite
-/Discourage the individual
-/Anorexia
+Which condition is Josh most likely facing?/Depression/Dementia/Anorexia/Social anxiety
+What percent of the Canadian population experiences mental health issues per year?/20%/10%/40%/60%
+Which is a common characteristic of the mental health issue Josh is facing?/Tiredness/Shortness of breath/Insomnia/Binge eating
+What a main cause of Josh's mental health issue?/Excessive stress/Weakening of muscles/Low appetite/Uncontrolled anger
+Based on what you've learned, what do you think you should do to help Josh with this mental health issue?/Establish a support group/Discourage him/Have him stay in bed/Give him space

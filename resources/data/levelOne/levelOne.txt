@@ -1,5 +1,5 @@
-Book/384/490/300/328/Josh is feeling stressed from his upcoming exams. Instead of studying, Josh is unable to cope with the stress and decides to give up and go to bed.
-Knife/180/187/448/493/Josh has contemplated suicidal thoughts and hides a knife underneath his bed.
-Window/217/368/21/167/Josh has not stepped outside his home for a while. He has been missing from school for the past two weeks. His friends notice his sudden withdrawal from social activities.
-Picture/408/498/21/136/Josh’s parents are planning to file for divorce. He hears them fight across the hallway every night.
-Bed/178/346/286/417/Josh has difficulty sleeping and his energy level is always significantly lower than most others. Josh is one of every five Canadian youth who is affected by this mental health condition.
+Book/380/493/292/328/Josh is feeling stressed from his upcoming exams. Instead of studying, Josh is unable to cope with the stress and decides to give up and go to bed.
+Knife/170/198/448/492/Josh has contemplated suicidal thoughts and hides a knife underneath his bed.
+Window/207/375/3/162/Josh has not stepped outside his home for a while. He has been missing from school for the past two weeks. His friends notice his sudden withdrawal from social activities.
+Picture/403/500/10/139/Josh’s parents are planning to file for divorce. He hears them fight across the hallway every night.
+Bed/159/355/231/469/Josh has difficulty sleeping and his energy level is always significantly lower than most others. Josh is one of every five Canadian youth who is affected by this mental health condition.
