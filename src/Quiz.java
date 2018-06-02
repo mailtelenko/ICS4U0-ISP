@@ -213,9 +213,9 @@ public class Quiz extends MenuParent {
 	 */
 	public void setButton(JButton button) {
 		// Set size
-		button.setPreferredSize(new Dimension(200, 40));
-		button.setMinimumSize(new Dimension(200, 40));
-		button.setMaximumSize(new Dimension(200, 40));
+		button.setPreferredSize(new Dimension(300, 40));
+		button.setMinimumSize(new Dimension(300, 40));
+		button.setMaximumSize(new Dimension(300, 40));
 
 		// Style Buttons
 		button.setFocusPainted(false);

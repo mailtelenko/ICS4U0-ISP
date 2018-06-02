@@ -110,7 +110,7 @@ public class Setup extends MenuParent {
 			} else {
 				game.setName(name);
 				game.window.getContentPane().removeAll(); // Remove all panels from frame
-				game.window.getContentPane().add(new LevelOne(game)); // Add level to frame
+				game.window.getContentPane().add(new LevelTwo(game)); // Add level to frame
 			}
 		}
 		// Validate/repaint
