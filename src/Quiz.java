@@ -136,7 +136,7 @@ public class Quiz extends MenuParent {
 	}
 
 	/**
-	 * createButtons method and adds the answer buttons to the JPanel centred on the
+	 * createButtons method and adds the answer buttons to the JPanel centered on the
 	 * screen.
 	 * 
 	 * @return JPanel complete with all styled and triggerable answer buttons.
@@ -198,7 +198,7 @@ public class Quiz extends MenuParent {
 		buttonContainer.setPreferredSize(new Dimension(700, 150 * (questions.size() / 4)));
 		buttonContainer.setMaximumSize(new Dimension(700, 150 * (questions.size() / 4)));
 
-		// Add container to centred panel
+		// Add container to centered panel
 		centredPanel.add(buttonContainer);
 		return centredPanel; // Return to JPanel
 	}
@@ -323,7 +323,7 @@ public class Quiz extends MenuParent {
 			if (level == 1)
 				game.window.getContentPane().add(new LevelTwo(game)); // Add new MainMenu panel to JFrame
 			else if (level == 2)
-				game.window.getContentPane().add(new MainMenu(game)); // Add new MainMenu panel to JFrame
+				game.window.getContentPane().add(new Results(game)); // Add new MainMenu panel to JFrame
 			// Update JFrame
 			game.window.revalidate();
 			game.window.repaint();

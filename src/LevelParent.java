@@ -112,7 +112,7 @@ public abstract class LevelParent extends JPanel {
 
 		/**
 		 * run method is continuously run every second (timer.schedule(new RemindTas(),
-		 * 0, 1000)). The method updates the timer by removind one from timeRem each
+		 * 0, 1000)). The method updates the timer by removing one from timeRem each
 		 * second. The timer will stop and call finishGame(false) (lose game) when the
 		 * timer runs out.
 		 */

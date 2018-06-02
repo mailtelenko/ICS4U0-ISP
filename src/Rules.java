@@ -39,7 +39,7 @@ public class Rules extends MenuParent {
 
 		JLabel instructions = new JLabel(); // Text label
 		instructions.setText("<html>"
-				+ "<center>There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case.<br/><br/>When the time runs out, you will be presented with a quiz which must be answered using the information you gathered from the room. A minimum of 75% is required on the quiz to proceed to the next level.<br/><br/>When exploring the rooms, be careful where you click, as incorrect clicks will negatively affect your score.<br/><br/> Click on New Game to begin level one. Have fun!</center>"
+				+ "<center>There are three levels in this game, completing the preceding level will allow you to continue to the next. In each level, you are tasked to solve a case before you run out of time. There will be objects around the “room” on screen which should be clicked on to gain the necessary information to solve the case.<br/><br/>When the time runs out, you will be presented with a quiz which must be answered using the information you gathered from the room. A minimum of 75% is required on the quiz to proceed to the next level.<br/><br/>When exploring the rooms, be careful where you click, as incorrect clicks will negatively affect your score.<br/><br/>Click on New Game to begin level one. Have fun!</center>"
 				+ "</html>"); // Set text to instructions
 		instructions.setBorder(new EmptyBorder(30, 80, 10, 80)); // Set border
 		instructions.setFont(new Font("Cambria Math", Font.PLAIN, 14));// Set font
