@@ -44,7 +44,7 @@ public abstract class LevelParent extends JPanel {
 	/** Dimensions for buttons */
 	Dimension buttonDimension = new Dimension(140, 32);
 	/** Buttons to be used in all levels */
-	public JButton menu, gameContinue, replay, exitPanel, closeDescription;
+	public JButton menu, continueBtn, retryBtn, exitPanel, closeDescription;
 	/** Icon image for JFrame icon **/
 	ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
 	/** Background Colour */
@@ -175,14 +175,14 @@ public abstract class LevelParent extends JPanel {
 	private void createButtons() {
 		// Create new JButtons
 		menu = new JButton("Main Menu");
-		gameContinue = new JButton("Continue");
-		replay = new JButton("Retry");
+		continueBtn = new JButton("Continue");
+		retryBtn = new JButton("Retry");
 		exitPanel = new JButton("Continue");
 
 		// Tweak/format buttons
 		setButton(menu);
-		setButton(gameContinue);
-		setButton(replay);
+		setButton(continueBtn);
+		setButton(retryBtn);
 	}
 
 	/**

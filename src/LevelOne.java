@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
@@ -157,18 +158,24 @@ public class LevelOne extends LevelParent {
 	 *            Determines if the continue or retry button is displayed.
 	 */
 	public void finishGame(boolean win) {
-		gameRunning = false; // Set game to stop running
-		timer.cancel(); // Cancel timer
-		timer.purge(); // Purge timer
+		JPanel buttonCont = new JPanel(new FlowLayout()); // JPanel for button
+		
 		if (win)
-			createDualButtons(this, menu, gameContinue);
+			buttonCont.add(continueBtn);
 		else {
 			BorderLayout layout = (BorderLayout) firstLevel.getLayout();
 			firstLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
-			createDualButtons(this, menu, replay);
+			buttonCont.add(retryBtn);
 		}
+		buttonCont.setBackground(backgroundColor); // Set background colour
+		this.add(buttonCont, BorderLayout.SOUTH); // Add FlowLayout with buttons to panel
+		
 		game.window.validate();
 		game.window.repaint();
+		
+		gameRunning = false; // Set game to stop running
+		timer.cancel(); // Cancel timer
+		timer.purge(); // Purge timer
 	}
 
 	/**
@@ -184,10 +191,10 @@ public class LevelOne extends LevelParent {
 		if (compare == menu) { // Check if the clicked button is the same object as menu button
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
-		} else if (compare == replay) {
+		} else if (compare == retryBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new LevelOne(game)); // Add mainMenu to panels
-		} else if (compare == gameContinue) {
+		} else if (compare == continueBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels
 		} else if (compare == closeDescription) {

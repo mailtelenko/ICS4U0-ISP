@@ -37,7 +37,7 @@ public class Quiz extends MenuParent {
 	/** The amount of correct questions answered by the user. */
 	int correctQuestions = 0;
 	/** JButtons for use at the end of the quiz */
-	JButton continueBtn, menu;
+	JButton continueBtn, retryBtn;
 	/** Reference to game object */
 	Game game;
 	/** The label used to display the question to the user */
@@ -270,10 +270,11 @@ public class Quiz extends MenuParent {
 				SwingConstants.CENTER);
 
 		// Set buttons
-		menu = new JButton("Main Menu"); // Create menu button
 		continueBtn = new JButton("Continue"); // Create continue button
+		retryBtn = new JButton("Retry"); // Create retry button
+		
 		super.setButton(continueBtn); // Set continue button
-		super.setButton(menu); // Set menu button
+		super.setButton(retryBtn); // Set retry button
 
 		// Set labels
 		percent.setFont(new Font("Cambria Math", Font.PLAIN, 30)); // Set font size
@@ -289,7 +290,7 @@ public class Quiz extends MenuParent {
 		// If the user has lost the quiz (< 75%) display the explanation JLabel
 		if (((double) correctQuestions / (double) questions.size()) < 0.75) {
 			wrapper.add(explanation, BorderLayout.CENTER); // Replace percent label w/ explanation label
-			buttonCont.add(menu); // Add main menu button to buttonCont
+			buttonCont.add(retryBtn); // Add retry button to buttonCont
 		} else {
 			buttonCont.add(continueBtn); // Add continue button to buttonCont
 		}
@@ -317,23 +318,25 @@ public class Quiz extends MenuParent {
 		// Check if title of button matches the current question answers
 		if (((JButton) e.getSource()).getText().equals(questions.get(currentQuestion)[1])) {
 			correctQuestions++; // Add one to correct answers
-			changeQuestion(currentQuestion); // Choose a new question to display
-		} else if (((JButton) e.getSource()) == continueBtn) { // Check if button is continue
+		} 
+		// Check if button is continue
+		if (((JButton) e.getSource()) == continueBtn) { 
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			if (level == 1)
-				game.window.getContentPane().add(new LevelTwo(game)); // Add new MainMenu panel to JFrame
+				game.window.getContentPane().add(new LevelTwo(game)); // Add new LevelTwo panel to JFrame
 			else if (level == 2)
-				game.window.getContentPane().add(new Results(game)); // Add new MainMenu panel to JFrame
-			// Update JFrame
-			game.window.revalidate();
-			game.window.repaint();
-		} else if (((JButton) e.getSource()) == menu) { // Check if button is main menu
+				game.window.getContentPane().add(new Results(game)); // Add new Results panel to JFrame
+		} else if (((JButton) e.getSource()) == retryBtn) { // Check if button is retry
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new MainMenu(game)); // Add new MainMenu panel to JFrame
-			// Update JFrame
-			game.window.revalidate();
-			game.window.repaint();
-		}
+			if (level == 1)
+				game.window.getContentPane().add(new LevelOne(game)); // Add new LevelOne panel to JFrame
+			else if (level == 2)
+				game.window.getContentPane().add(new LevelTwo(game)); // Add new LevelTwo panel to JFrame
+		} else 
+			changeQuestion(currentQuestion); // Choose a new question to display
+		// Update JFrame
+		game.window.revalidate();
+		game.window.repaint();
 	}
 
 }
