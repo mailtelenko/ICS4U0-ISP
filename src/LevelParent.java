@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.TimerTask;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 
 import javax.swing.ImageIcon;
@@ -38,55 +39,67 @@ public abstract class LevelParent extends JPanel {
 	/** Verify sender/receiver of object. */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
-	Game game;
+	private Game game;
 	/** Reference to level name */
-	String levelName;
+	private String levelName;
 	/** Dimensions for buttons */
-	Dimension buttonDimension = new Dimension(140, 32);
+	private Dimension buttonDimension = new Dimension(140, 32);
 	/** Buttons to be used in all levels */
 	public JButton menu, continueBtn, retryBtn, exitPanel, closeDescription;
 	/** Icon image for JFrame icon **/
-	ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
+	private ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
 	/** Background Colour */
-	Color backgroundColor = new Color(18, 24, 59);
+	public Color backgroundColor = new Color(18, 24, 59);
 	/** Timer panel (top left) */
-	JPanel timerPanel;
+	private JPanel timerPanel;
 	/** Timer label (digits) */
-	JLabel timerLabel;
+	private JLabel timerLabel;
 	/** Timer object used to control counting */
-	Timer timer = new Timer();
+	public Timer timer = new Timer();
 	/** Boolean value for if game is running (no menu screen showing) */
-	Boolean gameRunning = false;
+	public Boolean gameRunning = false;
+	/** Start and end time recording references */
+	public Date start, end;
+	/** The total accumulated time from each level */
+	public int totalTime;
+	/** The total accumulated incorrect answers from each level */
+	public int incorrectAnswers;
+	/** The total accumulated incorrect clicks from each level */
+	public int incorrectClicks;
 
-	/** JFrame for popup (when object is clicked on screen) */
-	JFrame infoPane;
+	/** JFrame for pop-up (when object is clicked on screen) */
+	private JFrame infoPane;
 	/** Title of infoPane */
-	JLabel infoTitle;
+	private JLabel infoTitle;
 	/** Description of object in panel */
-	JLabel infoContent;
+	private JLabel infoContent;
 	/** Close up of object (image at top of panel) */
-	JLabel imageLabel;
+	private JLabel imageLabel;
 	/** Font for use as title */
-	Font pixelFont;
+	private Font pixelFont;
 
 	/** Dimensions for timer and info JFrame */
-	Dimension timerDimension = new Dimension(100, 60);
-	Dimension infoDimension = new Dimension(350, 450);
+	private Dimension timerDimension = new Dimension(100, 60);
+	private Dimension infoDimension = new Dimension(350, 450);
 
 	/** Locations and coordinates for all of the hidden objects */
-	ArrayList<String[]> locations = new ArrayList<String[]>();
-	ArrayList<Boolean> locationFound = new ArrayList<Boolean>(); // ArrayList for if each item has been found
+	public ArrayList<String[]> locations = new ArrayList<String[]>();
+	public ArrayList<Boolean> locationFound = new ArrayList<Boolean>(); // ArrayList for if each item has been found
 
 	/**
 	 * LevelParent class constructor creates the buttons for use in both the main
 	 * JPanel (game.window) as well as the object information frame (infoPane).
 	 * 
-	 * @param g
+	 * @param gme	
 	 *            The game reference to be used by the object.
+	 * @param l
+	 *            The String representation of the level number.
 	 */
-	public LevelParent(Game g, String l) {
-		game = g;
+	public LevelParent(Game gme, String l) {
+		// Set instance variables
+		game = gme;
 		levelName = l;
+		
 		createButtons(); // Create buttons for use in panels
 		this.setLayout(new BorderLayout()); // Set panel layout to BorderLayout
 		// Create border for panel
@@ -141,7 +154,7 @@ public abstract class LevelParent extends JPanel {
 	public JPanel createTimer() {
 		timerPanel = new JPanel(); // Create new panel to house timer
 		timerPanel.add(timerLabel = new JLabel("")); // Set timer label to nothing and add to timerPanel
-		timerLabel.setHorizontalAlignment(SwingConstants.CENTER); // Align centre (horizontally)
+		timerLabel.setHorizontalAlignment(SwingConstants.CENTER); // Align center (horizontally)
 
 		// Set size of label
 		timerLabel.setMinimumSize(timerDimension);
@@ -189,9 +202,8 @@ public abstract class LevelParent extends JPanel {
 	 * setButton sets the correct size for the buttons and modifies their
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
-	 * @param button
-	 *            The button which is to be styled and attached to an action
-	 *            listener.
+	 * @param button	
+	 *            The button which is to be styled and attached to an action listener.
 	 */
 	public void setButton(JButton button) {
 		// Set size
@@ -239,7 +251,7 @@ public abstract class LevelParent extends JPanel {
 	 * The info panel displays information about the clicked object, along with an
 	 * image.
 	 * 
-	 * @return
+	 * @return a JFrame that displays information about the clicked object.
 	 */
 	private JFrame createInfoPane() {
 		JFrame tempFrame = new JFrame(); // Create temporary frame
@@ -308,8 +320,7 @@ public abstract class LevelParent extends JPanel {
 	}
 
 	/**
-	 * showInfoPane sets the content of the infoPane and then displays it to the
-	 * user.
+	 * showInfoPane sets the content of the infoPane and then displays it to the user.
 	 * 
 	 * @param data
 	 *            The title and content to be displayed in the panel.
@@ -325,12 +336,8 @@ public abstract class LevelParent extends JPanel {
 
 	/**
 	 * collectLocations reads from a file and imports the data to an ArrayList of
-	 * String arrays. The method also initialises the locationFound ArrayList to
+	 * String arrays. The method also initializes the locationFound ArrayList to
 	 * false.
-	 * 
-	 * @param levelName
-	 *            The name of the current level to be matched to the correct file in
-	 *            resources/data.
 	 */
 	public void collectLocations() {
 		String temp; // Empty temporary string
@@ -358,7 +365,7 @@ public abstract class LevelParent extends JPanel {
 				// Name, X-coordinate, X-coordinate 2, Y-coordinate, Y-coordinate 2, Description
 				locations.add(
 						new String[] { tempData[0], tempData[1], tempData[2], tempData[3], tempData[4], tempData[5] });
-				locationFound.add(false); // Initialise to false
+				locationFound.add(false); // Initialize to false
 
 			}
 			dataIn.close(); // Close connection to file
@@ -410,7 +417,8 @@ public abstract class LevelParent extends JPanel {
 	 * createIntroduction creates a JPanel complete with a description read from a
 	 * text file.
 	 * 
-	 * @param level The level number (string) to be created.
+	 * @param level 
+	 *            The level number (string) to be created.
 	 * @return JPanel complete with description, title, and start game button.
 	 */
 	public JPanel createIntroduction(String level) {

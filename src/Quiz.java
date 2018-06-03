@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
  * 
  * <h2>Course Info:</h2> ICS4U0 - Ms.Krasteva
  *
- *
  * @version 0.2
  * @author (Project Manager) Russell Leong, (Project Member) Liam Telenko
  */
@@ -31,41 +30,50 @@ public class Quiz extends MenuParent {
 	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
 	/** The level which created the quiz object */
-	int level;
+	private int level;
 	/** The current question number being displayed */
-	int currentQuestion = 0;
-	/** The amount of correct questions answered by the user. */
-	int correctQuestions = 0;
+	private int currentQuestion = 0;
+	/** The number of questions correctly answered by the user. */
+	private int correctAnswers = 0;
 	/** JButtons for use at the end of the quiz */
-	JButton continueBtn, retryBtn;
+	private JButton continueBtn, retryBtn;
 	/** Reference to game object */
-	Game game;
+	private Game game;
 	/** The label used to display the question to the user */
-	JLabel questionLabel;
+	private JLabel questionLabel;
 	/** Wrapper panel to be updated by multiple methods */
-	JPanel wrapper;
+	private JPanel wrapper;
 	/** JPanel to house buttons */
-	JPanel buttonContainer;
+	private JPanel buttonContainer;
 
 	/** ArrayLists to store data being used in the quiz */
-	ArrayList<String[]> questions = new ArrayList<String[]>();
-	ArrayList<JButton[]> buttons = new ArrayList<JButton[]>();
+	private ArrayList<String[]> questions = new ArrayList<String[]>();
+	private ArrayList<JButton[]> buttons = new ArrayList<JButton[]>();
 
 	/**
 	 * The Quiz constructor correctly lays out a new JPanel (super call to
 	 * MenuParent) and proceeds to fill it with a question label and answer buttons.
 	 * 
-	 * @param g
+	 * @param gme
 	 *            The game object being passed into the constructor.
 	 * @param l
 	 *            The level number which created the new Quiz object.
+	 * @param t		
+	 *            To update the total time spent on this level.
+	 * @param ia	
+	 *            To update the total incorrectly answered questions on this level.
+	 * @param ic	
+	 *            To update the total incorrect clicks on this level.
 	 */
-	public Quiz(Game g, int l) {
-		super(g, "Level " + l + " Quiz"); // Call to super
+	public Quiz(Game gme, int l, int t, int ia, int ic) {
+		super("Level " + l + " Quiz"); // Call to super with title
 
 		// Set instance variables
-		game = g;
+		game = gme;
 		level = l;
+		totalTime = t;
+		incorrectAnswers = ia;
+		incorrectClicks = ic;
 
 		// JPanel creation
 		JPanel container = new JPanel(new GridBagLayout());
@@ -115,6 +123,9 @@ public class Quiz extends MenuParent {
 	 * fillQuestions inputs data from a file specifically for each quiz, parses it,
 	 * and then adds the parsed data correctly to an ArrayList for use in the Quiz
 	 * object.
+	 * 
+	 * @param levelName 
+	 *            The String representation of the level number.
 	 */
 	public void fillQuestions(String levelName) {
 		String temp; // Empty temporary string
@@ -208,8 +219,7 @@ public class Quiz extends MenuParent {
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
 	 * @param button
-	 *            The button which is to be styled and attached to an action
-	 *            listener.
+	 *            The button which is to be styled and attached to an action listener.
 	 */
 	public void setButton(JButton button) {
 		// Set size
@@ -260,12 +270,12 @@ public class Quiz extends MenuParent {
 		JPanel buttonCont = new JPanel(new FlowLayout()); // JPanel for button
 		// Label for the percentage of correct answers
 		JLabel percent = new JLabel("<html>" + "<center>You correctly answered "
-				+ (int) (((double) correctQuestions / (double) questions.size()) * 100)
+				+ (int) (((double) correctAnswers / (double) questions.size()) * 100)
 				+ "% of the questions.</center>", SwingConstants.CENTER);
 		// Label for explanation of why they cannot proceed.
 		JLabel explanation = new JLabel(
 				"<html>" + "<center>You correctly answered "
-						+ (int) (((double) correctQuestions / (double) questions.size()) * 100)
+						+ (int) (((double) correctAnswers / (double) questions.size()) * 100)
 						+ "% of the questions.<br/>A 75% or greater is required to proceed.</center>" + "</html>",
 				SwingConstants.CENTER);
 
@@ -288,7 +298,7 @@ public class Quiz extends MenuParent {
 		wrapper.add(percent, BorderLayout.CENTER);
 
 		// If the user has lost the quiz (< 75%) display the explanation JLabel
-		if (((double) correctQuestions / (double) questions.size()) < 0.75) {
+		if (((double) correctAnswers / (double) questions.size()) < 0.75) {
 			wrapper.add(explanation, BorderLayout.CENTER); // Replace percent label w/ explanation label
 			buttonCont.add(retryBtn); // Add retry button to buttonCont
 		} else {
@@ -315,25 +325,29 @@ public class Quiz extends MenuParent {
 	 *            Checks if an ActionEvent is made on the button.
 	 */
 	public void buttonClicked(ActionEvent e) {
-		// Check if title of button matches the current question answers
-		if (((JButton) e.getSource()).getText().equals(questions.get(currentQuestion)[1])) {
-			correctQuestions++; // Add one to correct answers
-		} 
-		// Check if button is continue
-		if (((JButton) e.getSource()) == continueBtn) { 
+		JButton compare = (JButton) e.getSource(); // Cast the ActionEvent as a JButton		
+		
+		//Check button clicks
+		if (compare == continueBtn) { // Check if button is continue
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			if (level == 1)
-				game.window.getContentPane().add(new LevelTwo(game)); // Add new LevelTwo panel to JFrame
+				game.window.getContentPane().add(new LevelTwo(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelTwo panel to JFrame
 			else if (level == 2)
-				game.window.getContentPane().add(new Results(game)); // Add new Results panel to JFrame
-		} else if (((JButton) e.getSource()) == retryBtn) { // Check if button is retry
+				game.window.getContentPane().add(new Results(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new Results panel to JFrame
+		} else if (compare == retryBtn) { // Check if button is retry
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			if (level == 1)
-				game.window.getContentPane().add(new LevelOne(game)); // Add new LevelOne panel to JFrame
+				game.window.getContentPane().add(new LevelOne(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelOne panel to JFrame
 			else if (level == 2)
-				game.window.getContentPane().add(new LevelTwo(game)); // Add new LevelTwo panel to JFrame
-		} else 
+				game.window.getContentPane().add(new LevelTwo(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelTwo panel to JFrame
+		} else if (compare.getText().equals(questions.get(currentQuestion)[1])) { // Check if title of button matches the current question answers
+			correctAnswers++; // Add one to correct answers
 			changeQuestion(currentQuestion); // Choose a new question to display
+		} else {
+			incorrectAnswers++;
+			changeQuestion(currentQuestion); // Choose a new question to display
+		}
+			
 		// Update JFrame
 		game.window.revalidate();
 		game.window.repaint();

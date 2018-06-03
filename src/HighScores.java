@@ -17,20 +17,17 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- * The leaderboards of the game. Displays the highest ranking players from a
+ * The leader boards of the game. Displays the highest ranking players from a
  * list stored in resources.
  * 
  * <h2>Course Info:</h2> ICS4U0 - Ms.Krasteva
- *
  *
  * @version 0.2
  * @author (Project Manager) Russell Leong, (Project Member) Liam Telenko
  */
 public class HighScores extends MenuParent {
 
-	/**
-	 * Verify sender/receiver of object
-	 */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
 	private Game game;
@@ -39,16 +36,19 @@ public class HighScores extends MenuParent {
 	/** Menu and erase high scores button */
 	private JButton menu, erase;
 	/** ArrayList containing unparsed data */
-	ArrayList<String> scores;
+	private ArrayList<String> scores;
 
 	/**
 	 * Class constructor set up the JPanel and stores the unparsed data in scores.
 	 * 
-	 * @param gme The game reference to be used by the object.
+	 * @param gme	
+	 *            The game reference to be used by the object.
 	 */
 	public HighScores(Game gme) {
-		super(gme, "High Scores"); // Call to super with game object
-		game = gme; // Store reference to game object
+		super("High Scores"); // Call to super with title
+		
+		// Set instance variables
+		game = gme; // Set reference to game object
 
 		JPanel scorePanel = new JPanel(new GridBagLayout()); // Create centered container for scores
 
@@ -104,7 +104,7 @@ public class HighScores extends MenuParent {
 	 * readScores opens a connection to the highScores.txt file and reads the information into the 
 	 * scores ArrayList.
 	 * 
-	 * @return
+	 * @return ArrayList of scores read from highScores.txt file
 	 */
 	private ArrayList<String> readScores() {
 		ArrayList<String> input = new ArrayList<String>(); // Create empty ArrayList
@@ -148,7 +148,7 @@ public class HighScores extends MenuParent {
 	/**
 	 * buttonClicked checks if a button has been clicked and responds appropriately.
 	 * 
-	 * @param e
+	 * @param e	
 	 *            Checks if an ActionEvent is made on the button.
 	 */
 	public void buttonClicked(ActionEvent e) {

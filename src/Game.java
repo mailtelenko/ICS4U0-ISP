@@ -9,28 +9,24 @@ import javax.swing.JFrame;
  * 
  * <h2>Course Info:</h2> ICS4U0 - Ms.Krasteva
  *
- *
  * @version 0.2
  * @author (Project Manager) Russell Leong, (Project Member) Liam Telenko
  */
 public class Game extends JFrame {
 
-	/**
-	 * Verify sender/receiver of object
-	 */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
-
-	/** JFrame */
+	/** Game window */
 	public JFrame window;
-	/** Icon image for JFrame icon **/
-	ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
+	/** Icon image for JFrame icon */
+	private ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
 	/** Total and correct amount of clicks */
 	private int totalClicks, correctClicks = 0;
 	/** Name of player */
 	private String name;
 
 	/**
-	 * {@link Game} constructor. Creates a new JFrame for the main game window and
+	 * Game class constructor. Creates a new JFrame for the main game window and
 	 * sets the parameters of said window.
 	 */
 	public Game() {
@@ -47,25 +43,51 @@ public class Game extends JFrame {
 		window.setVisible(true); // Display window
 	}
 	
+	/**
+	 * addClick adds one to totalClicks if a click was made, and one to correctClicks
+	 * only if a correct click has been made.
+	 * 
+	 * @param correct
+	 *            To check whether the click was correct.
+	 */
 	public void addClick(boolean correct) {
 		if(correct)
-			correctClicks ++;
-		totalClicks ++;
+			correctClicks++;
+		totalClicks++;
 	}
 	
+	/**
+	 * resetClicks resets the number of clicks to zero.
+	 */
 	public void resetClicks() {
 		totalClicks = 0;
 		correctClicks = 0;
 	}
 	
+	/**
+	 * getPercentClicks returns the percentage of correct clicks.
+	 * 
+	 * @return percent of correct clicks
+	 */
 	public int getPercentClicks() {
-		return (int) (((double)correctClicks/(double)totalClicks) *100);
+		return (int) (((double) correctClicks / (double) totalClicks) * 100);
 	}
 	
+	/**
+	 * setName sets the user's name.
+	 * 
+	 * @param n	
+	 *            To store the user's name.
+	 */
 	public void setName(String n) {
 		name = n;
 	}
 	
+	/**
+	 * getName returns the user's name.
+	 * 
+	 * @return the user's name
+	 */
 	public String getName() {
 		return name;
 	}
@@ -73,7 +95,7 @@ public class Game extends JFrame {
 	/**
 	 * Creates a new Game object. Controls the flow of the program.
 	 * 
-	 * @param args
+	 * @param args	
 	 *            Java command line arguments
 	 */
 	public static void main(String[] args) {

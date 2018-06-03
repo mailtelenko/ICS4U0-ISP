@@ -17,7 +17,7 @@ import javax.swing.border.LineBorder;
 /**
  * The MainMenu class presents the user with four options to progress in the
  * program. These options are new game, rules, high scores, or exit. Each button
- * leads to a new panel (except for ext which terminates the program).
+ * leads to a new panel (except for exit which terminates the program).
  * 
  * <h2>Course Info:</h2> ICS4U0 with Krasteva, V.
  * 
@@ -26,14 +26,11 @@ import javax.swing.border.LineBorder;
  */
 public class MainMenu extends MenuParent {
 
-	/** Verify sender/receiver of object. */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
 	private Game game;
-	/**
-	 * Buttons to: Create new game (setup), show rules, show high scores, exit
-	 * program
-	 */
+	/** Buttons to: Create new game (setup), show rules, show high scores, exit program */
 	private JButton newGame, rules, highScores, exit;
 
 	/**
@@ -44,8 +41,10 @@ public class MainMenu extends MenuParent {
 	 *            To create a reference to the Game class.
 	 */
 	public MainMenu(Game gme) {
-		super(gme, "Cyber Case"); // Call to parent with game object
-		game = gme; // Set object's game object
+		super("Cyber Case"); // Call to parent with title
+		
+		// Set instance variables
+		game = gme; // Set reference to game object
 
 		// Create coloured border
 		setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 0), new LineBorder(Color.BLACK, 5)));
@@ -58,7 +57,8 @@ public class MainMenu extends MenuParent {
 	 * setButton sets the correct size for the buttons and modifies their
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
-	 * @param button The button to be styled and added an ActionListener to.
+	 * @param button 
+	 *            The button to be styled and added an ActionListener to.
 	 */
 	public void setButton(JButton button) {
 		// Set size (Specific to mainMenu)

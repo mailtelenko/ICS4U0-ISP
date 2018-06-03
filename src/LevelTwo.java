@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,32 +27,43 @@ import javax.swing.border.LineBorder;
  */
 public class LevelTwo extends LevelParent {
 
-	/** Verify sender/receiver of object. */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
-	Game game;
+	private Game game;
 	/** This object */
-	LevelTwo secondLevel = this;
+	private LevelTwo secondLevel = this;
 	/** The container for the game image */
-	JPanel imagePanel;
+	private JPanel imagePanel;
 
 	/**
 	 * LevelTwo class constructor sets the game reference to the game object.
 	 * 
 	 * @param gme
 	 *            To create a reference to the Game class.
+	 * @param t		
+	 *            To update the total time spent on this level.
+	 * @param ia	
+	 *            To update the total incorrectly answered questions on this level.
+	 * @param ic	
+	 *            To update the total incorrect clicks on this level.
 	 */
-	public LevelTwo(Game gme) {
+	public LevelTwo(Game gme, int t, int ia, int ic) {
 		super(gme, "levelTwo");
+		
+		// Set instance variables
 		game = gme; // Set reference to game object
+		totalTime = t; 
+		incorrectAnswers = ia; 
+		incorrectClicks = ic;
 
-		// JPanel to centre and house game image
+		// JPanel to center and house game image
 		imagePanel = new JPanel(new GridBagLayout());
 
 		// Create game image
 		ImageIcon gameImage = new ImageIcon(
 				new ImageIcon("resources/images/levelTwo/LevelTwo.jpg").getImage().getScaledInstance(750, 500, 10));
-		JLabel gameImageLabel = new JLabel("", gameImage, JLabel.CENTER); // Centre in JLabel
+		JLabel gameImageLabel = new JLabel("", gameImage, JLabel.CENTER); // Center in JLabel
 
 		// Style image
 		gameImageLabel
@@ -69,8 +81,10 @@ public class LevelTwo extends LevelParent {
 
 			@Override
 			/**
-			 * mouseClicked is triggered by the clicking of the mouse within the
-			 * gameImageLabel
+			 * mouseClicked is triggered by the clicking of the mouse within the gameImageLabel.
+			 * 
+			 * @param e	
+			 *            Checks if an MouseEvent is made on the mouse.
 			 */
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				System.out.println("Mouse clicked");
@@ -84,7 +98,7 @@ public class LevelTwo extends LevelParent {
 					if (Double.parseDouble(location[1]) <= e.getX() && Double.parseDouble(location[2]) >= e.getX()
 							&& Double.parseDouble(location[3]) <= e.getY()
 							&& Double.parseDouble(location[4]) >= e.getY() && gameRunning) {
-						// Show info panel popup
+						// Show info panel pop-up
 						showInfoPane(new String[] { location[0], location[5] });
 						locationFound.set(count, true); // Set object to found
 						// Remove previous panel from SOUTH border layout
@@ -92,43 +106,52 @@ public class LevelTwo extends LevelParent {
 						secondLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 						// Add to JPanel
 						secondLevel.add(updateObjectCounter(), BorderLayout.SOUTH);
+						incorrectClicks -= 2;
 						return;
+					}
+					else if (gameRunning) {
+						incorrectClicks++;
 					}
 					count++; // Add to count
 				}
 			}
 
 			/**
-			 * mouseEntered is triggered by the entering of the mouse within the
-			 * gameImageLabel
+			 * mouseEntered is triggered by the entering of the mouse within the gameImageLabel.
+			 * 
+			 * @param e	
+			 *            Checks if an MouseEvent is made on the mouse.
 			 */
 			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e) {
-			}
+			public void mouseEntered(java.awt.event.MouseEvent e) {}
 
 			/**
-			 * mouseExited is triggered by the exiting of the mouse within the
-			 * gameImageLabel
+			 * mouseExited is triggered by the exiting of the mouse within the gameImageLabel.
+			 * 
+			 * @param e	
+			 *            Checks if an MouseEvent is made on the mouse.
 			 */
 			@Override
-			public void mouseExited(java.awt.event.MouseEvent e) {
-			}
+			public void mouseExited(java.awt.event.MouseEvent e) {}
 
 			/**
 			 * mousePressed is triggered by the clicking and holding of the mouse within the
-			 * gameImageLabel
+			 * gameImageLabel.
+			 * 
+			 * @param e	
+			 *            Checks if an MouseEvent is made on the mouse.
 			 */
 			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
-			}
+			public void mousePressed(java.awt.event.MouseEvent e) {}
 
 			/**
-			 * mouseReleased is triggered by the release of the mouse within the
-			 * gameImageLabel
+			 * mouseReleased is triggered by the release of the mouse within the gameImageLabel.
+			 * 
+			 * @param e	
+			 *            Checks if an MouseEvent is made on the mouse.
 			 */
 			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-			}
+			public void mouseReleased(java.awt.event.MouseEvent e) {}
 		}); // Add a MouseListener to the image
 
 		imagePanel.setBackground(backgroundColor); // Set background colour
@@ -148,6 +171,7 @@ public class LevelTwo extends LevelParent {
 		remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER)); // Remove description
 		add(imagePanel, BorderLayout.CENTER); // Add game image
 		gameRunning = true; // Start timer
+		start = new Date(); // Start recording time
 	}
 
 	/**
@@ -176,6 +200,8 @@ public class LevelTwo extends LevelParent {
 		gameRunning = false; // Set game to stop running
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
+		end = new Date(); // End recording time
+		totalTime += (int) (end.getTime() - start.getTime() + 0.5) / 1000; // Add time difference to totalTime
 	}
 
 	/**
@@ -188,15 +214,12 @@ public class LevelTwo extends LevelParent {
 	@Override
 	public void buttonClicked(ActionEvent e) {
 		JButton compare = (JButton) e.getSource(); // Cast the ActionEvent as a JButton
-		if (compare == menu) { // Check if the clicked button is the same object as menu button
+		if (compare == retryBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
-		} else if (compare == retryBtn) {
-			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new LevelTwo(game)); // Add mainMenu to panels
+			game.window.getContentPane().add(new LevelTwo(game, totalTime, incorrectAnswers, incorrectClicks)); // Add LevelTwo to panels
 		} else if (compare == continueBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new Quiz(game, 2)); // Add mainMenu to panels
+			game.window.getContentPane().add(new Quiz(game, 2, totalTime, incorrectAnswers, incorrectClicks)); // Add Quiz to panels
 		} else if (compare == closeDescription) {
 			startGame();
 		}

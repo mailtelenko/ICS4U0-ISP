@@ -21,26 +21,26 @@ import javax.swing.border.EmptyBorder;
  */
 public class SplashScreen extends MenuParent implements MouseListener {
 
-	/**
-	 * Verify sender/receiver of object
-	 */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
-	Game game;
+	private Game game;
 
 	/**
 	 * SplashScreen class constructor creates multiple JPanels to properly display
 	 * the information on the window. It also adds a MouseListener to detect any
 	 * clicks on the window to proceed to the main menu.
 	 * 
-	 * @param g
-	 *            The game object to be used
+	 * @param gme
+	 *            To create a reference to the Game class.
 	 * @param titleStr
-	 *            The string to display on the screen
+	 *            The title to display on the screen.
 	 */
-	public SplashScreen(Game g, String titleStr) {
-		super(g, titleStr); // Call to super with title and game
-		game = g; // Set reference to game object
+	public SplashScreen(Game gme, String titleStr) {
+		super(titleStr); // Call to super with title
+		
+		// Set instance variables
+		game = gme; // Set reference to game object
 
 		// Create JPanels
 		JPanel container = new JPanel(new BorderLayout());
@@ -81,9 +81,12 @@ public class SplashScreen extends MenuParent implements MouseListener {
 
 	/**
 	 * mouseClicked is triggered by the clicking of the mouse within the JPanel
+	 * 
+	 * @param e	
+	 *            Checks if an MouseEvent is made on the mouse.
 	 */
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent e) {
 		game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 		game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
 		game.window.validate(); // Validate JFrame
@@ -92,36 +95,39 @@ public class SplashScreen extends MenuParent implements MouseListener {
 
 	/**
 	 * mouseEntered is triggered by the entering of the mouse within the JPanel
+	 * 
+	 * @param e	
+	 *            Checks if an MouseEvent is made on the mouse.
 	 */
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	/**
 	 * mouseExited is triggered by the exiting of the mouse within the JPanel
+	 * 
+	 * @param e	
+	 *            Checks if an MouseEvent is made on the mouse.
 	 */
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	/**
-	 * mousePressed is triggered by the clicking and holding of the mouse within the
-	 * JPanel
+	 * mousePressed is triggered by the clicking and holding of the mouse within the JPanel
+	 * 
+	 * @param e	
+	 *            Checks if an MouseEvent is made on the mouse.
 	 */
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	/**
 	 * mouseReleased is triggered by the release of the mouse within the JPanel
+	 * 
+	 * @param e	
+	 *            Checks if an MouseEvent is made on the mouse.
 	 */
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	/**
 	 * buttonClicked is not used in this class.
@@ -130,8 +136,6 @@ public class SplashScreen extends MenuParent implements MouseListener {
 	 *            Checks if an ActionEvent is made on the button.
 	 */
 	@Override
-	public void buttonClicked(ActionEvent e) {
-
-	}
+	public void buttonClicked(ActionEvent e) {}
 
 }

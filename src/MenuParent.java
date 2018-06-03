@@ -22,33 +22,34 @@ import javax.swing.border.LineBorder;
  * 
  * <h2>Course Info:</h2> ICS4U0 - Ms.Krasteva
  *
- *
  * @version 0.2
  * @author (Project Manager) Russell Leong, (Project Member) Liam Telenko
  */
 public abstract class MenuParent extends JPanel {
 
-	/**
-	 * Verify sender/receiver of object
-	 */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
-
-	/** Holds Game object */
-	Game window;
 	/** Dimensions for buttons */
-	Dimension buttonDimension = new Dimension(140, 32);
-	public JLabel title; // Title of panel
+	private Dimension buttonDimension = new Dimension(140, 32);
+	/** Title of panel */
+	private JLabel title; 
+	/** Background colour of panel */
 	public Color backgroundColor = new Color(18, 24, 59);
+	/** The total accumulated time from each level */
+	public int totalTime;
+	/** The total accumulated incorrect answers from each level */
+	public int incorrectAnswers;
+	/** The total accumulated incorrect clicks from each level */
+	public int incorrectClicks;
 
 	/**
 	 * MenuParent class constructor creates a title and generic layout for use in
 	 * the program menus.
 	 * 
-	 * @param game The game object to be referenced
-	 * @param titleStr The string to use as the title of the panel (top text)
+	 * @param titleStr 
+	 *            The string to use as the title of the panel (top text).
 	 */
-	public MenuParent(Game game, String titleStr) {
-		window = game; // Set window variable to game object
+	public MenuParent(String titleStr) {
 		JPanel titlePanel = new JPanel(new FlowLayout()); // Create JPanel for title
 		title = new JLabel(titleStr); // Create new JLabel
 
@@ -84,8 +85,7 @@ public abstract class MenuParent extends JPanel {
 	 * appearance. This method keeps consistency between the buttons of the program.
 	 * 
 	 * @param button
-	 *            The button which will be styled and will have an action listener
-	 *            attached
+	 *            The button which will be styled and will have an action listener attached.
 	 */
 	public void setButton(JButton button) {
 		// Set size
@@ -124,7 +124,8 @@ public abstract class MenuParent extends JPanel {
 	 * createCenterMenu creates a fills a JPanel with a mainMenu button properly
 	 * aligned and formatted.
 	 * 
-	 * @param panel The JPanel to add the menu button to
+	 * @param panel 
+	 *            The JPanel to add the menu button to.
 	 * @return JButton which was added to the panel.
 	 */
 	public JButton createCenterMenu(JPanel panel) {
@@ -140,9 +141,12 @@ public abstract class MenuParent extends JPanel {
 	 * createDualButtons method adds two buttons to a JPanel in order to keep them
 	 * in line on the JFrame.
 	 * 
-	 * @param panel The JPanel to add the buttons to
-	 * @param button1 JButton on the left of the dual button setup
-	 * @param button2 JButton on the right of the dual button setup
+	 * @param panel 
+	 *            The JPanel to add the buttons to
+	 * @param button1 
+	 *            JButton on the left of the dual button setup
+	 * @param button2 
+	 *            JButton on the right of the dual button setup
 	 */
 	public void createDualButtons(JPanel panel, JButton button1, JButton button2) {
 		JPanel flow = new JPanel(new FlowLayout()); // Create FlowLayout panel

@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class Rules extends MenuParent {
 
-	/** Verify sender/receiver of object. */
+	/** Verify sender/receiver of object */
 	private static final long serialVersionUID = 1L;
 	/** Creates menu button */
 	private JButton menu;
@@ -34,7 +34,7 @@ public class Rules extends MenuParent {
 	 *            To create a reference to the Game class.
 	 */
 	public Rules(Game gme) {
-		super(gme, "Rules"); // Call to super with game object
+		super("Rules"); // Call to super with title
 		game = gme; // Set object's game object
 
 		JLabel instructions = new JLabel(); // Text label

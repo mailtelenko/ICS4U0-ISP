@@ -39,10 +39,13 @@ public class Setup extends MenuParent {
 	/**
 	 * Setup class constructor creates layout of setup screen.
 	 * 
-	 * @param gme To create a reference to the Game class.
+	 * @param gme 
+	 *            To create a reference to the Game class.
 	 */
 	public Setup(Game gme) {
-		super(gme, "Setup"); // Call to parent with game object
+		super("Setup"); // Call to parent with title
+		
+		// Set instance variables
 		game = gme; // Set object's game object
 		
 		game.resetClicks();
@@ -110,7 +113,7 @@ public class Setup extends MenuParent {
 			} else {
 				game.setName(name);
 				game.window.getContentPane().removeAll(); // Remove all panels from frame
-				game.window.getContentPane().add(new LevelTwo(game)); // Add level to frame
+				game.window.getContentPane().add(new LevelOne(game, 0, 0, 0)); // Add level to frame
 			}
 		}
 		// Validate/repaint
