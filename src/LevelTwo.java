@@ -201,7 +201,7 @@ public class LevelTwo extends LevelParent {
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
 		end = new Date(); // End recording time
-		totalTime += (int) (end.getTime() - start.getTime() + 0.5) / 1000; // Add time difference to totalTime
+		totalTime += (int) (end.getTime() - start.getTime() + 500) / 1000; // Add time difference to totalTime
 	}
 
 	/**
