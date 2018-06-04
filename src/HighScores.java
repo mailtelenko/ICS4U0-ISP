@@ -55,7 +55,7 @@ public class HighScores extends MenuParent {
 		scores = readScores(); // Read scores into ArrayList
 		String allScores = ""; // All scores string
 		if (scores.size() > 0) { // Check if there are scores within the ArrayList
-			for (int x = 0; x < scores.size(); x++) { // Iterate over each name
+			for (int x = 0; x < scores.size() && x < 10; x++) { // Iterate over each name
 				// Add each name & score to allScores
 				allScores += (x + 1) + ". " + scores.get(x).substring(0, scores.get(x).indexOf(",")) + " .......... "
 						+ scores.get(x).substring(scores.get(x).indexOf(",") + 1) + "<br/>";

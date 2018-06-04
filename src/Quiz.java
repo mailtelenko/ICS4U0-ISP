@@ -340,6 +340,8 @@ public class Quiz extends MenuParent {
 				game.window.getContentPane().add(new LevelOne(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelOne panel to JFrame
 			else if (level == 2)
 				game.window.getContentPane().add(new LevelTwo(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelTwo panel to JFrame
+			else if(level == 3)
+				game.window.getContentPane().add(new LevelThree(game)); // Add new LevelThree panel to JFrame
 		} else if (compare.getText().equals(questions.get(currentQuestion)[1])) { // Check if title of button matches the current question answers
 			correctAnswers++; // Add one to correct answers
 			changeQuestion(currentQuestion); // Choose a new question to display

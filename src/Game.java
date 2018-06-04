@@ -31,7 +31,7 @@ public class Game extends JFrame {
 	 */
 	public Game() {
 		window = new JFrame("Cyber Case"); // Create JFrame window
-		SplashScreen splash = new SplashScreen(this, "Cyber Case");
+		SplashScreen splash = new SplashScreen(this, "");
 
 		// Setup JFrame
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Set default close operation

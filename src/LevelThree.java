@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,7 +31,7 @@ public class LevelThree extends LevelParent {
 	/** Reference to Game object */
 	Game game;
 	/** This object */
-	LevelThree firstLevel = this;
+	LevelThree thirdLevel = this;
 	/** The container for the game image */
 	JPanel centerContainer;
 	/** The text container for dialoge */
@@ -242,18 +243,26 @@ public class LevelThree extends LevelParent {
 	 *            Determines if the continue or retry button is displayed.
 	 */
 	public void finishGame(boolean win) {
+		JPanel buttonCont = new JPanel(new FlowLayout()); // JPanel for button
+
+		if (win)
+			buttonCont.add(continueBtn);
+		else {
+			BorderLayout layout = (BorderLayout) thirdLevel.getLayout();
+			thirdLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
+			buttonCont.add(retryBtn);
+		}
+		buttonCont.setBackground(backgroundColor); // Set background colour
+		this.add(buttonCont, BorderLayout.SOUTH); // Add FlowLayout with buttons to panel
+
+		game.window.validate();
+		game.window.repaint();
+
 		gameRunning = false; // Set game to stop running
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
-		if (win)
-			createDualButtons(this, menu, gameContinue);
-		else {
-			BorderLayout layout = (BorderLayout) firstLevel.getLayout();
-			firstLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
-			createDualButtons(this, menu, replay);
-		}
-		game.window.validate();
-		game.window.repaint();
+		end = new Date(); // End recording time
+		totalTime += (int) (end.getTime() - start.getTime() + 500) / 1000; // Add time difference to totalTime
 	}
 
 	/**
@@ -269,12 +278,12 @@ public class LevelThree extends LevelParent {
 		if (compare == menu) { // Check if the clicked button is the same object as menu button
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
-		} else if (compare == replay) {
+		} else if (compare == retryBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new LevelThree(game)); // Add mainMenu to panels
-		} else if (compare == gameContinue) {
+		} else if (compare == continueBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels
+			//game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels
 		} else if (compare == closeDescription) { // If stat game is pressed
 			startGame(); // Start game
 		} else if (compare == user1) { // If first user button is clicked
