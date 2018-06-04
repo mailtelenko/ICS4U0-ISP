@@ -58,13 +58,22 @@ public class Quiz extends MenuParent {
 	 *            The game object being passed into the constructor.
 	 * @param l
 	 *            The level number which created the new Quiz object.
+	 * @param t		
+	 *            To update the total time spent on this level.
+	 * @param ia	
+	 *            To update the total incorrectly answered questions on this level.
+	 * @param ic	
+	 *            To update the total incorrect clicks on this level.
 	 */
-	public Quiz(Game gme, int l) {
+	public Quiz(Game gme, int l, int t, int ia, int ic) {
 		super("Level " + l + " Quiz"); // Call to super with title
 
 		// Set instance variables
 		game = gme;
 		level = l;
+		totalTime = t;
+		incorrectAnswers = ia;
+		incorrectClicks = ic;
 
 		// JPanel creation
 		JPanel container = new JPanel(new GridBagLayout());
@@ -322,25 +331,24 @@ public class Quiz extends MenuParent {
 		if (compare == continueBtn) { // Check if button is continue
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			if (level == 1)
-				game.window.getContentPane().add(new LevelTwo(game)); // Add new LevelTwo panel to JFrame
+				game.window.getContentPane().add(new LevelTwo(game, totalTime, incorrectAnswers, incorrectClicks)); //Add new levelTwo panel to JFrame
 			else if(level == 2)
-				game.window.getContentPane().add(new Results(game)); // Add new LevelTwo panel to JFrame
+				game.window.getContentPane().add(new LevelThree(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelThree panel to JFrame
 			else if (level == 3)
-				game.window.getContentPane().add(new Results(game)); // Add new Results panel to JFrame
+				game.window.getContentPane().add(new Results(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new Results panel to JFrame
 		} else if (compare == retryBtn) { // Check if button is retry
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			if (level == 1)
-				game.window.getContentPane().add(new LevelOne(game)); // Add new LevelOne panel to JFrame
+				game.window.getContentPane().add(new LevelOne(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelOne panel to JFrame
 			else if (level == 2)
-				game.window.getContentPane().add(new LevelTwo(game)); // Add new LevelTwo panel to JFrame
+				game.window.getContentPane().add(new LevelTwo(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelTwo panel to JFrame
 			else if(level == 3)
-				game.window.getContentPane().add(new LevelThree(game)); // Add new LevelThree panel to JFrame
+				game.window.getContentPane().add(new LevelThree(game, totalTime, incorrectAnswers, incorrectClicks)); // Add new LevelThree panel to JFrame
 		} else if (compare.getText().equals(questions.get(currentQuestion)[1])) { // Check if title of button matches the current question answers
 			correctAnswers++; // Add one to correct answers
-			game.addAnswer(true);
 			changeQuestion(currentQuestion); // Choose a new question to display
 		} else {
-			game.addAnswer(false);
+			incorrectAnswers++;
 			changeQuestion(currentQuestion); // Choose a new question to display
 		}
 			

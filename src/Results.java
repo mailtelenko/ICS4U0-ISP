@@ -28,6 +28,12 @@ public class Results extends MenuParent {
 	private Game game;
 	/** Label to be filled with final results */
 	private JLabel resultsLabel;
+	/** The total accumulated time from each level */
+	private int totalTime;
+	/** The total accumulated incorrect answers from each level */
+	private int incorrectAnswers;
+	/** The total accumulated incorrect clicks from each level */
+	private int incorrectClicks;
 
 	/**
 	 * Results class constructor creates layout of results screen.
@@ -35,16 +41,19 @@ public class Results extends MenuParent {
 	 * @param gme
 	 *            To create a reference to the Game class.
 	 */
-	public Results(Game gme) {
+	public Results(Game gme, int t, int ia, int ic) {
 		super("Results"); // Call to super with title
 		
 		// Set instance variables
 		game = gme; // Set reference to game object
+		totalTime = t;
+		incorrectAnswers = ia;
+		incorrectClicks = ic;
 		
 		JPanel resultsPanel = new JPanel(new GridBagLayout()); // Create centered container for results
 		
 		resultsPanel.add(resultsLabel = new JLabel("<html>"
-				+ "<center>Final Score: XXX<br/><br/><br/><br/>Total Time: " + game.getTime() + " seconds<br/><br/>Incorrect Answers: " + game.getIncorrectAnswers() + "<br/><br/>Incorrect Clicks: " + game.getIncorrectClicks() + "</center>"
+				+ "<center>Final Score: XXX<br/><br/><br/><br/>Total Time: " + totalTime + " seconds<br/><br/>" + incorrectAnswers + " Incorrect Answers<br/><br/>" + game.getIncorrect() + " Incorrect Clicks</center>"
 				+ "</html>"));
 		
 		resultsLabel.setBorder(new EmptyBorder(30, 80, 10, 80)); // Set border

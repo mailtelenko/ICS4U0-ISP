@@ -1,1 +1,4 @@
-2This is the button/2This is the response which the user will type in... wow look how neat this is!
+What's you name?/Doesn’t matter.
+Where do you live?/Close enough.
+Can we videochat?/My webcam broke and I can’t get it fixed… so no.
+How do we know eachother?/We met that one time with your friends.

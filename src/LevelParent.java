@@ -60,6 +60,12 @@ public abstract class LevelParent extends JPanel {
 	public Boolean gameRunning = false;
 	/** Start and end time recording references */
 	public Date start, end;
+	/** The total accumulated time from each level */
+	public int totalTime;
+	/** The total accumulated incorrect answers from each level */
+	public int incorrectAnswers;
+	/** The total accumulated incorrect clicks from each level */
+	public int incorrectClicks;
 
 	/** JFrame for pop-up (when object is clicked on screen) */
 	private JFrame infoPane;

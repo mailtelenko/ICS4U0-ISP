@@ -41,12 +41,21 @@ public class LevelTwo extends LevelParent {
 	 * 
 	 * @param gme
 	 *            To create a reference to the Game class.
+	 * @param t		
+	 *            To update the total time spent on this level.
+	 * @param ia	
+	 *            To update the total incorrectly answered questions on this level.
+	 * @param ic	
+	 *            To update the total incorrect clicks on this level.
 	 */
-	public LevelTwo(Game gme) {
+	public LevelTwo(Game gme, int t, int ia, int ic) {
 		super(gme, "levelTwo");
 		
 		// Set instance variables
 		game = gme; // Set reference to game object
+		totalTime = t; 
+		incorrectAnswers = ia; 
+		incorrectClicks = ic;
 
 		// JPanel to center and house game image
 		imagePanel = new JPanel(new GridBagLayout());
@@ -97,14 +106,14 @@ public class LevelTwo extends LevelParent {
 						secondLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 						// Add to JPanel
 						secondLevel.add(updateObjectCounter(), BorderLayout.SOUTH);
-						game.addClick(true);
+						game.addClick(true); // Add correct click
 						return;
 					}
 					count++; // Add to count
 				}
-				
+				// If the game is running add an incorrect click (game not over)
 				if (gameRunning) {
-					game.addClick(false);
+					game.addClick(false); // Add incorrect click
 				}
 			}
 
@@ -193,7 +202,7 @@ public class LevelTwo extends LevelParent {
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
 		end = new Date(); // End recording time
-		game.addTime(300, (int) (end.getTime() - start.getTime() + 500) / 1000); // Add time difference to totalTime
+		totalTime += (int) (end.getTime() - start.getTime() + 500) / 1000; // Add time difference to totalTime
 	}
 
 	/**
@@ -208,10 +217,10 @@ public class LevelTwo extends LevelParent {
 		JButton compare = (JButton) e.getSource(); // Cast the ActionEvent as a JButton
 		if (compare == retryBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new LevelTwo(game)); // Add LevelTwo to panels
+			game.window.getContentPane().add(new LevelTwo(game, totalTime, incorrectAnswers, incorrectClicks)); // Add LevelTwo to panels
 		} else if (compare == continueBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new Quiz(game, 2)); // Add Quiz to panels
+			game.window.getContentPane().add(new Quiz(game, 2, totalTime, incorrectAnswers, incorrectClicks)); // Add Quiz to panels
 		} else if (compare == closeDescription) {
 			startGame();
 		}
