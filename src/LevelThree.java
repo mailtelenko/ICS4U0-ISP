@@ -34,7 +34,7 @@ public class LevelThree extends LevelParent {
 	LevelThree thirdLevel = this;
 	/** The container for the game image */
 	JPanel centerContainer;
-	/** The text container for dialoge */
+	/** The text container for dialogue */
 	JPanel messageContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	JLabel messages = new JLabel(" ");
 	/** JButtons for users */
@@ -56,6 +56,9 @@ public class LevelThree extends LevelParent {
 	 */
 	public LevelThree(Game gme) {
 		super(gme, "levelThree"); // Call to super with level
+		game = gme; // Set reference to game object
+
+		// Set instance variables
 		game = gme; // Set reference to game object
 
 		// JPanel to contain all elements
@@ -91,7 +94,6 @@ public class LevelThree extends LevelParent {
 
 		// Add to JPanel
 		add(createIntroduction("Three"), BorderLayout.CENTER); // Add description
-		add(updateObjectCounter(), BorderLayout.SOUTH); // Add object counter
 	}
 
 	/**
@@ -233,6 +235,7 @@ public class LevelThree extends LevelParent {
 		remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER)); // Remove description
 		add(centerContainer, BorderLayout.CENTER); // Add game image
 		gameRunning = true; // Start timer
+		start = new Date(); // Start recording time
 	}
 
 	/**
@@ -262,7 +265,9 @@ public class LevelThree extends LevelParent {
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
 		end = new Date(); // End recording time
-		totalTime += (int) (end.getTime() - start.getTime() + 500) / 1000; // Add time difference to totalTime
+		System.out.println(start.getTime());
+		System.out.println(end.getTime());
+		game.addTime(300, (int) (end.getTime() - start.getTime() + 500) / 1000); // Add time difference to totalTime
 	}
 
 	/**
@@ -283,8 +288,8 @@ public class LevelThree extends LevelParent {
 			game.window.getContentPane().add(new LevelThree(game)); // Add mainMenu to panels
 		} else if (compare == continueBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			//game.window.getContentPane().add(new Quiz(game, 1)); // Add mainMenu to panels
-		} else if (compare == closeDescription) { // If stat game is pressed
+			game.window.getContentPane().add(new Quiz(game, 3)); // Add mainMenu to panels
+		} else if (compare == closeDescription) { // If start game is pressed
 			startGame(); // Start game
 		} else if (compare == user1) { // If first user button is clicked
 			currentUser = 1; // Set user

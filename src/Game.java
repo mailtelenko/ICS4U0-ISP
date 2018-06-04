@@ -21,7 +21,7 @@ public class Game extends JFrame {
 	/** Icon image for JFrame icon */
 	private ImageIcon iconImg = new ImageIcon("resources/images/Logo.png");
 	/** Total and correct amount of clicks */
-	private int totalClicks, correctClicks = 0;
+	private int totalClicks, correctClicks, totalTime, timeSpent, totalAnswers, correctAnswers = 0;
 	/** Name of player */
 	private String name;
 
@@ -44,36 +44,6 @@ public class Game extends JFrame {
 	}
 	
 	/**
-	 * addClick adds one to totalClicks if a click was made, and one to correctClicks
-	 * only if a correct click has been made.
-	 * 
-	 * @param correct
-	 *            To check whether the click was correct.
-	 */
-	public void addClick(boolean correct) {
-		if(correct)
-			correctClicks++;
-		totalClicks++;
-	}
-	
-	/**
-	 * resetClicks resets the number of clicks to zero.
-	 */
-	public void resetClicks() {
-		totalClicks = 0;
-		correctClicks = 0;
-	}
-	
-	/**
-	 * getPercentClicks returns the percentage of correct clicks.
-	 * 
-	 * @return percent of correct clicks
-	 */
-	public int getPercentClicks() {
-		return (int) (((double) correctClicks / (double) totalClicks) * 100);
-	}
-	
-	/**
 	 * setName sets the user's name.
 	 * 
 	 * @param n	
@@ -91,7 +61,125 @@ public class Game extends JFrame {
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * resetClicks resets the number of clicks to zero.
+	 */
+	public void resetClicks() {
+		totalClicks = 0;
+		correctClicks = 0;
+	}
+	
+	/**
+	 * addClick adds one to totalClicks if a click was made, and one to correctClicks
+	 * only if a correct click has been made.
+	 * 
+	 * @param correct
+	 *            To check whether the click was correct.
+	 */
+	public void addClick(boolean correct) {
+		if(correct)
+			correctClicks++;
+		totalClicks++;
+	}
+	
+	/**
+	 * getIncorrectClicks() returns the total incorrect clicks.
+	 * 
+	 * @return number of incorrect clicks
+	 */
+	public int getIncorrectClicks() {
+		return totalClicks - correctClicks;
+	}
+	
+	/**
+	 * getPercentClicks returns the percentage of correct clicks.
+	 * 
+	 * @return percent of correct clicks
+	 */
+	public int getPercentClicks() {
+		return (int) (((double) correctClicks / (double) totalClicks) * 100);
+	}
 
+	/**
+	 * resetTime resets the time to zero.
+	 */
+	public void resetTime() {
+		totalTime = 0;
+		timeSpent = 0;
+	}
+	
+	/**
+	 * addTime adds time in seconds to the total accumulated time from each level
+	 * 
+	 * @param totalT
+	 *            The total time in seconds available (spent or unspent).
+	 * @param tSpent 
+	 *            The time spent in seconds.
+	 */
+	public void addTime(int totalT, int tSpent) {
+		totalTime += totalT;
+		timeSpent += tSpent;
+	}
+	
+	/**
+	 * getTime returns the total time spent on every level
+	 * 
+	 * @return total time spent in seconds
+	 */
+	public int getTime() {
+		return timeSpent;
+	}
+	
+	/**
+	 * getPercentTime returns the percentage of remaining time.
+	 * 
+	 * @return percent of remaining time
+	 */
+	public int getPercentTime() {
+		return (int) (((double) (totalTime - timeSpent) / (double) totalTime) * 100);
+	}
+	
+	/**
+	 * resetAnswers resets the number of answers to zero.
+	 */
+	public void resetAnswers() {
+		totalAnswers = 0;
+		correctAnswers = 0;
+	}
+	
+	/**
+	 * addAnswer adds one to totalAnswers if a question was answered, and one to 
+	 * correctAnswers only if a question has been correctly answered.
+	 * 
+	 * @param correct
+	 *            To check whether the answer was correct.
+	 * 
+	 */
+	public void addAnswer(boolean correct) {
+		if(correct)
+			correctAnswers++;
+		totalAnswers++;
+	}
+	
+	/**
+	 * getIncorrectAnswers returns the number of incorrectly answered questions
+	 * 
+	 * @return the number of incorrectly answered questions
+	 */
+	public int getIncorrectAnswers() {
+		return totalAnswers - correctAnswers;
+	}
+	
+	/**
+	 * getPercentAnswers returns the percentage of correct answers.
+	 * 
+	 * @return percent of correct clicks
+	 */
+	public int getPercentAnswers() {
+		return (int) (((double) correctAnswers / (double) totalAnswers) * 100);
+	}
+	
 	/**
 	 * Creates a new Game object. Controls the flow of the program.
 	 * 

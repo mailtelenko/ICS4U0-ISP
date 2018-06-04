@@ -112,8 +112,11 @@ public class Setup extends MenuParent {
 						JOptionPane.ERROR_MESSAGE); // Display error message to user
 			} else {
 				game.setName(name);
+				game.resetClicks();
+				game.resetTime();
+				game.resetAnswers();
 				game.window.getContentPane().removeAll(); // Remove all panels from frame
-				game.window.getContentPane().add(new LevelOne(game, 0, 0, 0)); // Add level to frame
+				game.window.getContentPane().add(new LevelOne(game)); // Add level to frame
 			}
 		}
 		// Validate/repaint
