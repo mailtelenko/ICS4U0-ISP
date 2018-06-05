@@ -1,1 +1,4 @@
-3This is the button/3This is the response which the user will type in... wow look how neat this is!
+What's you name?/My name is Marry Matthews.
+Where do you live?/I moved away to Kingston a couple of years back. I’m still there.
+Can we videochat?/I’m not very good with computers but I’m sure I can figure it out. Let’s do it tomorrow.
+How do we know eachother?/ I was your assigned grade 8 buddy when you were in grade 5, I tutored you in math and science.

@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,7 +35,7 @@ public class LevelThree extends LevelParent {
 	LevelThree thirdLevel = this;
 	/** The container for the game image */
 	JPanel centerContainer;
-	/** The text container for dialogue */
+	/** The text container for dialoge */
 	JPanel messageContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	JLabel messages = new JLabel(" ");
 	/** JButtons for users */
@@ -68,6 +69,9 @@ public class LevelThree extends LevelParent {
 		centerContainer.setBackground(backgroundColor); // Set background colour
 		centerContainer.setBorder(new EmptyBorder(10, 10, 10, 10)); // Set border
 
+		//Set messages font
+		messages.setFont(new Font("Cambria Math", Font.PLAIN, 17));
+		
 		// Set messageConatiner
 		messageContainer.setBackground(Color.decode("#402644")); // Set background colour
 		messageContainer.setBorder(new LineBorder(Color.BLACK, 7)); // Set border
@@ -183,6 +187,8 @@ public class LevelThree extends LevelParent {
 	public void updateButtons() {
 		JPanel tempPanel = new JPanel(new FlowLayout()); // JPanel container to be returned
 		ArrayList<JButton> tempArray = new ArrayList<JButton>(); // ArrayList of JButtons
+		JButton exitButton = new JButton("Close User " + currentUser);
+		
 		for (int x = 0; x < prompts.get(currentUser - 1).size(); x++) { // Iterate through all prompts to fetch buttons
 			if (prompts.get(currentUser - 1).get(x)[0] != null) { // Check if the prompt was set to null (question
 																	// asked)
@@ -195,6 +201,13 @@ public class LevelThree extends LevelParent {
 				tempPanel.add(tempArray.get(0)); // Add to tempPanel
 			}
 		}
+		
+		setButton(exitButton);
+		exitButton.setMinimumSize(new Dimension(250, 40));
+		exitButton.setPreferredSize(new Dimension(250, 40));
+		exitButton.setMaximumSize(new Dimension(250, 40));
+		tempPanel.add(exitButton);
+		
 		// Set tempPanel size
 		tempPanel.setMinimumSize(new Dimension(700, 100 * (prompts.get(currentUser - 1).size() / 3)));
 		tempPanel.setPreferredSize(new Dimension(700, 100 * (prompts.get(currentUser - 1).size() / 3)));
@@ -224,6 +237,12 @@ public class LevelThree extends LevelParent {
 			if (prompts.get(currentUser - 1).get(x)[0] != null
 					&& prompts.get(currentUser - 1).get(x)[0].equals(clickedString))
 				updateDialog(x); // Update the dialog with the correct prompt
+			else if(clickedString.equals("Close User " + currentUser) && currentUser == 2)
+				finishGame(true);
+			else if(clickedString.equals("Close User " + currentUser)) {
+				showInfoPane(new String[] { "Incorrect User", "The selected user was not the... blah blah blah" });
+				finishGame(false);
+			}
 		}
 	}
 
@@ -251,12 +270,13 @@ public class LevelThree extends LevelParent {
 		if (win)
 			buttonCont.add(continueBtn);
 		else {
-			BorderLayout layout = (BorderLayout) thirdLevel.getLayout();
-			thirdLevel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
 			buttonCont.add(retryBtn);
 		}
+		
 		buttonCont.setBackground(backgroundColor); // Set background colour
-		this.add(buttonCont, BorderLayout.SOUTH); // Add FlowLayout with buttons to panel
+		
+		centerContainer.remove(((BorderLayout) centerContainer.getLayout()).getLayoutComponent(BorderLayout.SOUTH));
+		centerContainer.add(buttonCont, BorderLayout.SOUTH); // Add FlowLayout with buttons to panel
 
 		game.window.validate();
 		game.window.repaint();
@@ -265,8 +285,6 @@ public class LevelThree extends LevelParent {
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
 		end = new Date(); // End recording time
-		System.out.println(start.getTime());
-		System.out.println(end.getTime());
 		game.addTime(300, (int) (end.getTime() - start.getTime() + 500) / 1000); // Add time difference to totalTime
 	}
 
@@ -289,15 +307,15 @@ public class LevelThree extends LevelParent {
 		} else if (compare == continueBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new Quiz(game, 3)); // Add mainMenu to panels
-		} else if (compare == closeDescription) { // If start game is pressed
+		} else if (compare == closeDescription) { // If stat game is pressed
 			startGame(); // Start game
-		} else if (compare == user1) { // If first user button is clicked
+		} else if (compare == user1 && gameRunning) { // If first user button is clicked
 			currentUser = 1; // Set user
 			updateMessages(); // Update messages
-		} else if (compare == user2) { // If second user button is clicked
+		} else if (compare == user2 && gameRunning) { // If second user button is clicked
 			currentUser = 2; // Set user
 			updateMessages(); // Update messages
-		} else if (compare == user3) { // If third user button is clicked
+		} else if (compare == user3 && gameRunning) { // If third user button is clicked
 			currentUser = 3; // Set user
 			updateMessages(); // Update messages
 		} else {

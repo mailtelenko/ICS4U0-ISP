@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class Game extends JFrame {
 		window.setIconImage(iconImg.getImage()); // Set the icon image for the JFrame
 		window.getContentPane().add(splash); // Add mainMenu to window
 		window.setSize(900, 700); // Set size
+		window.setMinimumSize(new Dimension(900, 700)); // Set size
 		window.setLocationRelativeTo(null); // Position in the center
 		window.setVisible(true); // Display window
 	}
