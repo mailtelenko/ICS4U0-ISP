@@ -1,5 +1,5 @@
 Book/445/538/164/234/Based on Sam’s conditions, the doctors provide Sam with an exercise routine, and suggest a new and improved healthy food plan. In addition, Sam is registered for Nicotine Replacement Therapy, which is widely known to have a success rate of 25%.
-Cigarettes/477/520/382/418/A packet of cigarettes and a lighter fell out of Sam’s pocket.
-Face/392/443/235/270/There is a noticeable brown staining of the hard palate, teeth, fingers, and fingernails.
+Cigarettes/477/520/382/418/Sam was carrying a packet of cigarettes and a lighter in his pocket.
+Face/392/443/235/270/There is a noticeable brown staining of the hard palate, teeth, fingers, and finger nails.
 Chest/399/542/276/354/Sam experiences chest pains, shortness of breath, and persistent coughs; he coughs out blood and thick green sputum.
 Doctors/544/739/157/326/The doctors reveal that Sam has a Body Mass Index of higher than 30, which is above the normal range. 
