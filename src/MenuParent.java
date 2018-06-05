@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -35,12 +36,8 @@ public abstract class MenuParent extends JPanel {
 	private JLabel title; 
 	/** Background colour of panel */
 	public Color backgroundColor = new Color(18, 24, 59);
-	/** The total accumulated time from each level */
-	public int totalTime;
-	/** The total accumulated incorrect answers from each level */
-	public int incorrectAnswers;
-	/** The total accumulated incorrect clicks from each level */
-	public int incorrectClicks;
+	/** ArrayList containing unparsed data */
+	public ArrayList<String> scores;
 
 	/**
 	 * MenuParent class constructor creates a title and generic layout for use in

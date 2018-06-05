@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -28,6 +31,8 @@ public class Results extends MenuParent {
 	private Game game;
 	/** Label to be filled with final results */
 	private JLabel resultsLabel;
+	/** User's calculated score */
+	private int score;
 
 	/**
 	 * Results class constructor creates layout of results screen.
@@ -43,8 +48,11 @@ public class Results extends MenuParent {
 		
 		JPanel resultsPanel = new JPanel(new GridBagLayout()); // Create centered container for results
 		
+		score = game.getPercentTime() * game.getPercentAnswers() * game.getPercentClicks();
+		writeToHighScores();
+		
 		resultsPanel.add(resultsLabel = new JLabel("<html>"
-				+ "<center>Final Score: XXX<br/><br/><br/><br/>Total Time: " + game.getTime() + " seconds<br/><br/>Incorrect Answers: " + game.getIncorrectAnswers() + "<br/><br/>Incorrect Clicks: " + game.getIncorrectClicks() + "</center>"
+				+ "<center>Final Score: " + score + "<br/><br/><br/><br/>Total Time: " + game.getTime() + " seconds<br/><br/>Incorrect Answers: " + game.getIncorrectAnswers() + "<br/><br/>Incorrect Clicks: " + game.getIncorrectClicks() + "</center>"
 				+ "</html>"));
 		
 		resultsLabel.setBorder(new EmptyBorder(30, 80, 10, 80)); // Set border
@@ -55,6 +63,53 @@ public class Results extends MenuParent {
 		
 		add(resultsPanel); // Add instructions to JPanel
 		add(createButtons(), BorderLayout.SOUTH); // Add buttons to bottom of panel
+	}
+	
+	/**
+	 * writeToHighScores uses insertion sort to find the top 10 scores and writes them
+	 * to highScores.txt file
+	 */
+	private void writeToHighScores() {
+		ArrayList<Integer> scoresNum = new ArrayList<Integer>(); // Create new ArrayList to store previous scores that exclude names
+		
+		scores = game.getScores(); // Get original high scores list
+		scores.add(game.getName() + "," + String.valueOf(score)); // Add new score to list
+		
+		// Only sort through scores if there is more than one score
+		if (scores.size() > 1) {
+			for (int x = 0 ; x < scores.size() ; x++) { // Collect all numeric scores
+				scoresNum.add(Integer.parseInt(scores.get(x).substring(scores.get(x).indexOf(",") + 1)));
+			}
+			
+			// Insertion sort for high scores
+			for (int j = 1 ; j < scores.size() ; j++) {
+				
+	            int key = scoresNum.get(j);
+	            int i = j - 1;
+
+	            while (i >= 0 && scoresNum.get(i) < key) {
+	                scoresNum.set(i+1, scoresNum.get(i));
+	                scores.set(i+1, scores.get(i));
+	                i--;
+	                scoresNum.set(i+1, key);
+	                scores.set(i+1, game.getName() + "," + String.valueOf(score));
+	            }
+	        }
+		}
+		
+		// Write to highScores.txt file
+		try {
+			//Open output to file
+			PrintWriter dataOut = new PrintWriter(new FileWriter("resources/data/highScores.txt")); 
+			
+			// Prints out top 10 scores
+			for (int i = 0 ; i < scores.size() && i < 10 ; i++) {
+				dataOut.println(scores.get(i));
+			}
+			dataOut.close(); // Close data out
+		} catch (Exception e) { // Catch exception
+			System.out.println(e); // Print out exception
+		}
 	}
 
 	/**

@@ -322,7 +322,7 @@ public class Quiz extends MenuParent {
 		if (compare == continueBtn) { // Check if button is continue
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			if (level == 1)
-				game.window.getContentPane().add(new LevelTwo(game)); // Add new LevelTwo panel to JFrame
+				game.window.getContentPane().add(new Results(game)); // Add new LevelTwo panel to JFrame
 			else if(level == 2)
 				game.window.getContentPane().add(new Results(game)); // Add new LevelTwo panel to JFrame
 			else if (level == 3)

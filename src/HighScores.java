@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -35,8 +34,6 @@ public class HighScores extends MenuParent {
 	private JLabel scoresLabel;
 	/** Menu and erase high scores button */
 	private JButton menu, erase;
-	/** ArrayList containing unparsed data */
-	private ArrayList<String> scores;
 
 	/**
 	 * Class constructor set up the JPanel and stores the unparsed data in scores.
@@ -52,7 +49,7 @@ public class HighScores extends MenuParent {
 
 		JPanel scorePanel = new JPanel(new GridBagLayout()); // Create centered container for scores
 
-		scores = readScores(); // Read scores into ArrayList
+		scores = game.getScores(); // Read scores into ArrayList
 		String allScores = ""; // All scores string
 		if (scores.size() > 0) { // Check if there are scores within the ArrayList
 			for (int x = 0; x < scores.size() && x < 10; x++) { // Iterate over each name
@@ -98,29 +95,6 @@ public class HighScores extends MenuParent {
 		// Add buttons to wrapper panel
 		wrapper.add(buttons);
 		return wrapper; // Return wrapper panel
-	}
-
-	/**
-	 * readScores opens a connection to the highScores.txt file and reads the information into the 
-	 * scores ArrayList.
-	 * 
-	 * @return ArrayList of scores read from highScores.txt file
-	 */
-	private ArrayList<String> readScores() {
-		ArrayList<String> input = new ArrayList<String>(); // Create empty ArrayList
-		String temp; // Empty temporary string
-		try {
-			//Open input to file
-			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/highScores.txt"));
-			// While there are no empty lines add the lines to the ArrayList
-			while ((temp = dataIn.readLine()) != null) {
-				input.add(temp); //Add to ArrayList
-			}
-			dataIn.close(); // Close connection to file
-		} catch (Exception e) { // Catch exception
-			System.out.println(e); // Print out exception
-		}
-		return input; // Return ArrayList
 	}
 
 	/**

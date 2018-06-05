@@ -1,4 +1,7 @@
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -41,6 +44,29 @@ public class Game extends JFrame {
 		window.setSize(900, 700); // Set size
 		window.setLocationRelativeTo(null); // Position in the center
 		window.setVisible(true); // Display window
+	}
+	
+	/**
+	 * getScores opens a connection to the highScores.txt file and reads the information into the 
+	 * scores ArrayList.
+	 * 
+	 * @return ArrayList of scores read from highScores.txt file
+	 */
+	public ArrayList<String> getScores() {
+		ArrayList<String> input = new ArrayList<String>(); // Create empty ArrayList
+		String temp; // Empty temporary string
+		try {
+			//Open input to file
+			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/highScores.txt"));
+			// While there are no empty lines add the lines to the ArrayList
+			while ((temp = dataIn.readLine()) != null) {
+				input.add(temp); //Add to ArrayList
+			}
+			dataIn.close(); // Close connection to file
+		} catch (Exception e) { // Catch exception
+			System.out.println(e); // Print out exception
+		}
+		return input; // Return ArrayList
 	}
 	
 	/**
