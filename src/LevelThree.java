@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 /**
- * The LevelThree class extends LevelParent and is the third level in a series
+ * The LevelThree class extends LevelParent and is the thrid level in a series
  * of three. The level focuses on online safety as well as the dangers of
  * interacting with strangers.
  * 
@@ -30,31 +30,36 @@ public class LevelThree extends LevelParent {
 	/** Verify sender/receiver of object. */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
-	private Game game;
+	Game game;
+	/** This object */
+	LevelThree thirdLevel = this;
 	/** The container for the game image */
-	private JPanel centerContainer;
-	/** The text container for dialogue */
-	private JPanel messageContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	JPanel centerContainer;
+	/** The text container for dialoge */
+	JPanel messageContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	JLabel messages = new JLabel(" ");
 	/** JButtons for users */
-	private JButton user1, user2, user3;
+	JButton user1, user2, user3;
 	/** Current user being talked to **/
-	private int currentUser = 1;
+	int currentUser = 1;
 	/** Dialog between user and player */
-	private String[] dialog = new String[] { "", "", "" };
+	String[] dialog = new String[] { "", "", "" };
 	/** All prompts for the player */
-	private ArrayList<ArrayList<String[]>> prompts = new ArrayList<ArrayList<String[]>>();
+	ArrayList<ArrayList<String[]>> prompts = new ArrayList<ArrayList<String[]>>();
 	/** Initial greetings for users */
-	private String[] greetings = new String[] { "Hello", "Hey", "Yo" };
+	String[] greetings = new String[] { "Hello", "Hey", "Yo" };
 
 	/**
-	 * LevelThree class constructor sets the game reference to the game object.
+	 * LevelOne class constructor sets the game reference to the game object.
 	 * 
 	 * @param gme
 	 *            To create a reference to the Game class.
 	 */
 	public LevelThree(Game gme) {
 		super(gme, "levelThree"); // Call to super with level
+		game = gme; // Set reference to game object
+
+		// Set instance variables
 		game = gme; // Set reference to game object
 
 		// JPanel to contain all elements
@@ -124,7 +129,7 @@ public class LevelThree extends LevelParent {
 	}
 
 	/**
-	 * fillPrompts inputs data from a file specifically for each quiz, parses it,
+	 * fillQuestions inputs data from a file specifically for each quiz, parses it,
 	 * and then adds the parsed data correctly to an ArrayList for use in the Quiz
 	 * object.
 	 */
@@ -219,7 +224,7 @@ public class LevelThree extends LevelParent {
 	}
 
 	/**
-	 * checkButtons determines which button was clicked and then updates the
+	 * clickedButtons determines which button was clicked and then updates the
 	 * messages accordingly.
 	 * 
 	 * @param clickedString
@@ -235,7 +240,7 @@ public class LevelThree extends LevelParent {
 			else if(clickedString.equals("Close User " + currentUser) && currentUser == 2)
 				finishGame(true);
 			else if(clickedString.equals("Close User " + currentUser)) {
-				showInfoPane(new String[] { "Incorrect User", "The selected user was not the... blah blah blah" });
+				showInfoPane(new String[] { "Incorrect User", "The selected user was not the suspicous individual and you let the culprit get away. Please retry the level." });
 				finishGame(false);
 			}
 		}

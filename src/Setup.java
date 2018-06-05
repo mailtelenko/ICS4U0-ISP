@@ -39,38 +39,46 @@ public class Setup extends MenuParent {
 	/**
 	 * Setup class constructor creates layout of setup screen.
 	 * 
-	 * @param gme 
+	 * @param gme
 	 *            To create a reference to the Game class.
 	 */
 	public Setup(Game gme) {
 		super("Setup"); // Call to parent with title
-		
+
 		// Set instance variables
 		game = gme; // Set object's game object
-		
+
 		game.resetClicks();
 
 		JPanel container = new JPanel(new GridBagLayout()); // Create container for text field
 
 		JLabel prompt = new JLabel(); // Create input label
 		prompt.setText("<html>" + "Please enter your name:<br/>" + "</html>"); // Add text to label
-		prompt.setFont(new Font("Cambria Math", Font.PLAIN, 14)); //Set font of prompt
-		prompt.setForeground(Color.WHITE); //Set text colour
+		prompt.setFont(new Font("Cambria Math", Font.PLAIN, 14)); // Set font of prompt
+		prompt.setForeground(Color.WHITE); // Set text colour
 		container.add(prompt); // Add to container
 		container.add(Box.createHorizontalStrut(10)); // Add horizontal spacing between label/input
-		
+
 		textField = new JTextField(30); // Set text field
-		//Create coloured border
-		textField.setBorder(new CompoundBorder(new LineBorder(Color.decode("#402644"), 3), new EmptyBorder(5,5,5,5)));
-		textField.setFont(new Font("Cambria Math", Font.PLAIN, 14)); //Set font
-		
+		// Create coloured border
+		textField
+				.setBorder(new CompoundBorder(new LineBorder(Color.decode("#402644"), 3), new EmptyBorder(5, 5, 5, 5)));
+		textField.setFont(new Font("Cambria Math", Font.PLAIN, 14)); // Set font
+
 		container.add(textField); // Add text field to container
 
 		container.setBackground(backgroundColor); // Set background colour
-		
+
 		// Add to Setup panel
 		add(container, BorderLayout.CENTER);
 		add(createButtons(), BorderLayout.SOUTH);
+
+		//Add cursor to text field (invoke later required or else skipped over)
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				textField.requestFocusInWindow(); //Request focus
+			}
+		});
 	}
 
 	/**
@@ -107,7 +115,8 @@ public class Setup extends MenuParent {
 	public void buttonClicked(ActionEvent e) {
 		JButton compare = (JButton) e.getSource(); // Cast event to button
 		if (compare == cont) { // Check if the button is the same as continue
-			if ((name = textField.getText()).length() < 1) { // Check if name is valid
+			if ((name = textField.getText()).length() < 1 || textField.getText().equals(" ")) { // Check if name is
+																								// valid
 				JOptionPane.showMessageDialog(game.window, "Please enter a name before continuing.", "Enter name",
 						JOptionPane.ERROR_MESSAGE); // Display error message to user
 			} else {
@@ -116,7 +125,7 @@ public class Setup extends MenuParent {
 				game.resetTime();
 				game.resetAnswers();
 				game.window.getContentPane().removeAll(); // Remove all panels from frame
-				game.window.getContentPane().add(new LevelThree(game)); // Add level to frame
+				game.window.getContentPane().add(new LevelOne(game)); // Add level to frame
 			}
 		}
 		// Validate/repaint
