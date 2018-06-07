@@ -190,10 +190,10 @@ public class LevelOne extends LevelParent {
 		game.window.repaint();
 		
 		gameRunning = false; // Set game to stop running
+		end = new Date(); // End recording time
+		game.addTime(300000, (int) (end.getTime() - start.getTime())); // Add time difference to totalTime
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
-		end = new Date(); // End recording time
-		game.addTime(300, (int) (end.getTime() - start.getTime() + 500) / 1000); // Add time difference to totalTime
 	}
 	
 	/**

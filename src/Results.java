@@ -48,7 +48,7 @@ public class Results extends MenuParent {
 		
 		JPanel resultsPanel = new JPanel(new GridBagLayout()); // Create centered container for results
 		
-		score = game.getPercentTime() * game.getPercentAnswers() * game.getPercentClicks();
+		score = (int) (game.getPercentTime() * game.getPercentAnswers() * game.getPercentClicks());
 		writeToHighScores();
 		
 		resultsPanel.add(resultsLabel = new JLabel("<html>"

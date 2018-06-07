@@ -125,8 +125,8 @@ public class Game extends JFrame {
 	 * 
 	 * @return percent of correct clicks
 	 */
-	public int getPercentClicks() {
-		return (int) (((double) correctClicks / (double) totalClicks) * 100);
+	public double getPercentClicks() {
+		return ((double) correctClicks / (double) totalClicks) * 100;
 	}
 
 	/**
@@ -138,12 +138,12 @@ public class Game extends JFrame {
 	}
 	
 	/**
-	 * addTime adds time in seconds to the total accumulated time from each level
+	 * addTime adds time in milliseconds to the total accumulated time from each level
 	 * 
 	 * @param totalT
-	 *            The total time in seconds available (spent or unspent).
+	 *            The total time in milliseconds available (spent or unspent).
 	 * @param tSpent 
-	 *            The time spent in seconds.
+	 *            The time spent in milliseconds.
 	 */
 	public void addTime(int totalT, int tSpent) {
 		totalTime += totalT;
@@ -156,7 +156,7 @@ public class Game extends JFrame {
 	 * @return total time spent in seconds
 	 */
 	public int getTime() {
-		return timeSpent;
+		return (int) ((double) timeSpent / 1000);
 	}
 	
 	/**
@@ -164,8 +164,8 @@ public class Game extends JFrame {
 	 * 
 	 * @return percent of remaining time
 	 */
-	public int getPercentTime() {
-		return (int) (((double) (totalTime - timeSpent) / (double) totalTime) * 100);
+	public double getPercentTime() {
+		return ((double) (totalTime - timeSpent) / (double) totalTime) * 100;
 	}
 	
 	/**
@@ -204,8 +204,8 @@ public class Game extends JFrame {
 	 * 
 	 * @return percent of correct clicks
 	 */
-	public int getPercentAnswers() {
-		return (int) (((double) correctAnswers / (double) totalAnswers) * 100);
+	public double getPercentAnswers() {
+		return ((double) correctAnswers / (double) totalAnswers) * 100;
 	}
 	
 	/**

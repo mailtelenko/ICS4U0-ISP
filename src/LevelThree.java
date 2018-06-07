@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 /**
- * The LevelThree class extends LevelParent and is the thrid level in a series
+ * The LevelThree class extends LevelParent and is the third level in a series
  * of three. The level focuses on online safety as well as the dangers of
  * interacting with strangers.
  * 
@@ -30,24 +30,22 @@ public class LevelThree extends LevelParent {
 	/** Verify sender/receiver of object. */
 	private static final long serialVersionUID = 1L;
 	/** Reference to Game object */
-	Game game;
-	/** This object */
-	LevelThree thirdLevel = this;
+	private Game game;
 	/** The container for the game image */
-	JPanel centerContainer;
-	/** The text container for dialoge */
-	JPanel messageContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JLabel messages = new JLabel(" ");
+	private JPanel centerContainer;
+	/** The text container for dialogue */
+	private JPanel messageContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	private JLabel messages = new JLabel(" ");
 	/** JButtons for users */
-	JButton user1, user2, user3;
+	private JButton user1, user2, user3;
 	/** Current user being talked to **/
-	int currentUser = 1;
+	private int currentUser = 1;
 	/** Dialog between user and player */
-	String[] dialog = new String[] { "", "", "" };
+	private String[] dialog = new String[] { "", "", "" };
 	/** All prompts for the player */
-	ArrayList<ArrayList<String[]>> prompts = new ArrayList<ArrayList<String[]>>();
+	private ArrayList<ArrayList<String[]>> prompts = new ArrayList<ArrayList<String[]>>();
 	/** Initial greetings for users */
-	String[] greetings = new String[] { "Hello", "Hey", "Yo" };
+	private String[] greetings = new String[] { "Hello", "Hey", "Yo" };
 
 	/**
 	 * LevelOne class constructor sets the game reference to the game object.
@@ -231,18 +229,20 @@ public class LevelThree extends LevelParent {
 	 *            The text of the JButton clicked.
 	 */
 	public void checkButtons(String clickedString) {
+		// Check if user closes a user's chat window
+		if(clickedString.equals("Close User 2")) {
+			finishGame(true);
+		} else if(clickedString.equals("Close User 1") || clickedString.equals("Close User 3")) {
+			showInfoPane(new String[] { "Incorrect User", "The selected user was not the suspicous individual and you let the culprit get away. Please retry the level." });
+			finishGame(false);
+		}
+		
 		// Iterate over all prompts
 		for (int x = 0; x < prompts.get(currentUser - 1).size(); x++) {
 			// Check if prompt is not null (used) and if it is the correct prompt
 			if (prompts.get(currentUser - 1).get(x)[0] != null
 					&& prompts.get(currentUser - 1).get(x)[0].equals(clickedString))
 				updateDialog(x); // Update the dialog with the correct prompt
-			else if(clickedString.equals("Close User " + currentUser) && currentUser == 2)
-				finishGame(true);
-			else if(clickedString.equals("Close User " + currentUser)) {
-				showInfoPane(new String[] { "Incorrect User", "The selected user was not the suspicous individual and you let the culprit get away. Please retry the level." });
-				finishGame(false);
-			}
 		}
 	}
 
@@ -282,10 +282,10 @@ public class LevelThree extends LevelParent {
 		game.window.repaint();
 
 		gameRunning = false; // Set game to stop running
+		end = new Date(); // End recording time
+		game.addTime(300000, (int) (end.getTime() - start.getTime())); // Add time difference to totalTime
 		timer.cancel(); // Cancel timer
 		timer.purge(); // Purge timer
-		end = new Date(); // End recording time
-		game.addTime(300, (int) (end.getTime() - start.getTime() + 500) / 1000); // Add time difference to totalTime
 	}
 
 	/**
@@ -298,16 +298,13 @@ public class LevelThree extends LevelParent {
 	@Override
 	public void buttonClicked(ActionEvent e) {
 		JButton compare = (JButton) e.getSource(); // Cast the ActionEvent as a JButton
-		if (compare == menu) { // Check if the clicked button is the same object as menu button
-			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
-			game.window.getContentPane().add(new MainMenu(game)); // Add mainMenu to panels
-		} else if (compare == retryBtn) {
+		if (compare == retryBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new LevelThree(game)); // Add mainMenu to panels
 		} else if (compare == continueBtn) {
 			game.window.getContentPane().removeAll(); // Remove all panels from JFrame
 			game.window.getContentPane().add(new Quiz(game, 3)); // Add mainMenu to panels
-		} else if (compare == closeDescription) { // If stat game is pressed
+		} else if (compare == closeDescription) { // If start game is pressed
 			startGame(); // Start game
 		} else if (compare == user1 && gameRunning) { // If first user button is clicked
 			currentUser = 1; // Set user
