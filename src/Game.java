@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+
 /**
  * The main Game class for Cyber Case. Controls program flow and JFrame.
  * 
@@ -27,9 +28,6 @@ public class Game extends JFrame {
 	private int totalClicks, correctClicks, totalTime, timeSpent, totalAnswers, correctAnswers = 0;
 	/** Name of player */
 	private String name;
-	/** Path of the high scores file */
-	private String scoresPath = System.getenv("SystemDrive") + "\\users\\" + System.getProperty("user.name")
-			+ "\\Desktop";
 
 	/**
 	 * Game class constructor. Creates a new JFrame for the main game window and
@@ -49,10 +47,10 @@ public class Game extends JFrame {
 		window.setLocationRelativeTo(null); // Position in the center
 		window.setVisible(true); // Display window
 	}
-
+	
 	/**
-	 * getScores opens a connection to the highScores.txt file and reads the
-	 * information into the scores ArrayList.
+	 * getScores opens a connection to the highScores.txt file and reads the information into the 
+	 * scores ArrayList.
 	 * 
 	 * @return ArrayList of scores read from highScores.txt file
 	 */
@@ -60,11 +58,11 @@ public class Game extends JFrame {
 		ArrayList<String> input = new ArrayList<String>(); // Create empty ArrayList
 		String temp; // Empty temporary string
 		try {
-			// Open input to file
-			BufferedReader dataIn = new BufferedReader(new FileReader(getHighScoresPath() + "\\CyberCase\\highscores.txt"));
+			//Open input to file
+			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/highScores.txt"));
 			// While there are no empty lines add the lines to the ArrayList
 			while ((temp = dataIn.readLine()) != null) {
-				input.add(temp); // Add to ArrayList
+				input.add(temp); //Add to ArrayList
 			}
 			dataIn.close(); // Close connection to file
 		} catch (Exception e) { // Catch exception
@@ -72,17 +70,17 @@ public class Game extends JFrame {
 		}
 		return input; // Return ArrayList
 	}
-
+	
 	/**
 	 * setName sets the user's name.
 	 * 
-	 * @param n
+	 * @param n	
 	 *            To store the user's name.
 	 */
 	public void setName(String n) {
 		name = n;
 	}
-
+	
 	/**
 	 * getName returns the user's name.
 	 * 
@@ -91,7 +89,7 @@ public class Game extends JFrame {
 	public String getName() {
 		return name;
 	}
-
+	
 	/**
 	 * resetClicks resets the number of clicks to zero.
 	 */
@@ -99,20 +97,20 @@ public class Game extends JFrame {
 		totalClicks = 0;
 		correctClicks = 0;
 	}
-
+	
 	/**
-	 * addClick adds one to totalClicks if a click was made, and one to
-	 * correctClicks only if a correct click has been made.
+	 * addClick adds one to totalClicks if a click was made, and one to correctClicks
+	 * only if a correct click has been made.
 	 * 
 	 * @param correct
 	 *            To check whether the click was correct.
 	 */
 	public void addClick(boolean correct) {
-		if (correct)
+		if(correct)
 			correctClicks++;
 		totalClicks++;
 	}
-
+	
 	/**
 	 * getIncorrectClicks() returns the total incorrect clicks.
 	 * 
@@ -121,7 +119,7 @@ public class Game extends JFrame {
 	public int getIncorrectClicks() {
 		return totalClicks - correctClicks;
 	}
-
+	
 	/**
 	 * getPercentClicks returns the percentage of correct clicks.
 	 * 
@@ -138,21 +136,20 @@ public class Game extends JFrame {
 		totalTime = 0;
 		timeSpent = 0;
 	}
-
+	
 	/**
-	 * addTime adds time in milliseconds to the total accumulated time from each
-	 * level
+	 * addTime adds time in milliseconds to the total accumulated time from each level
 	 * 
 	 * @param totalT
 	 *            The total time in milliseconds available (spent or unspent).
-	 * @param tSpent
+	 * @param tSpent 
 	 *            The time spent in milliseconds.
 	 */
 	public void addTime(int totalT, int tSpent) {
 		totalTime += totalT;
 		timeSpent += tSpent;
 	}
-
+	
 	/**
 	 * getTime returns the total time spent on every level
 	 * 
@@ -161,7 +158,7 @@ public class Game extends JFrame {
 	public int getTime() {
 		return (int) ((double) timeSpent / 1000);
 	}
-
+	
 	/**
 	 * getPercentTime returns the percentage of remaining time.
 	 * 
@@ -170,7 +167,7 @@ public class Game extends JFrame {
 	public double getPercentTime() {
 		return ((double) (totalTime - timeSpent) / (double) totalTime) * 100;
 	}
-
+	
 	/**
 	 * resetAnswers resets the number of answers to zero.
 	 */
@@ -178,9 +175,9 @@ public class Game extends JFrame {
 		totalAnswers = 0;
 		correctAnswers = 0;
 	}
-
+	
 	/**
-	 * addAnswer adds one to totalAnswers if a question was answered, and one to
+	 * addAnswer adds one to totalAnswers if a question was answered, and one to 
 	 * correctAnswers only if a question has been correctly answered.
 	 * 
 	 * @param correct
@@ -188,11 +185,11 @@ public class Game extends JFrame {
 	 * 
 	 */
 	public void addAnswer(boolean correct) {
-		if (correct)
+		if(correct)
 			correctAnswers++;
 		totalAnswers++;
 	}
-
+	
 	/**
 	 * getIncorrectAnswers returns the number of incorrectly answered questions
 	 * 
@@ -201,7 +198,7 @@ public class Game extends JFrame {
 	public int getIncorrectAnswers() {
 		return totalAnswers - correctAnswers;
 	}
-
+	
 	/**
 	 * getPercentAnswers returns the percentage of correct answers.
 	 * 
@@ -210,29 +207,11 @@ public class Game extends JFrame {
 	public double getPercentAnswers() {
 		return ((double) correctAnswers / (double) totalAnswers) * 100;
 	}
-
-	/**
-	 * Accessor method for scoresPath. Returns path of CyberCase/highscores.txt.
-	 * 
-	 * @return
-	 */
-	public String getHighScoresPath() {
-		return scoresPath;
-	}
-
-	/**
-	 * Mutator method for scoresPath. Sets the path of CyberCase/highscores.txt.
-	 * 
-	 * @param path
-	 */
-	public void setHighScoresPath(String path) {
-		scoresPath = path;
-	}
-
+	
 	/**
 	 * Creates a new Game object. Controls the flow of the program.
 	 * 
-	 * @param args
+	 * @param args	
 	 *            Java command line arguments
 	 */
 	public static void main(String[] args) {

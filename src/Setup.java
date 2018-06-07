@@ -3,13 +3,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -76,102 +73,12 @@ public class Setup extends MenuParent {
 		add(container, BorderLayout.CENTER);
 		add(createButtons(), BorderLayout.SOUTH);
 
-		// Add cursor to text field (invoke later required or else skipped over)
+		//Add cursor to text field (invoke later required or else skipped over)
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				textField.requestFocusInWindow(); // Request focus
+				textField.requestFocusInWindow(); //Request focus
 			}
 		});
-
-		// Validate/repaint due to possible popup
-		game.window.validate();
-		game.window.repaint();
-		
-		checkHighscores(); // Check if high scores file is valid
-	}
-
-	/**
-	 * checkHighscores determines if the current directory set in the @link{Game}
-	 * class is a valid path to a highscores.txt file.
-	 */
-	private void checkHighscores() {
-		// Check if the CyberCase\highscores.txt file exists in the directory specified
-		if (!(new File(game.getHighScoresPath() + "\\CyberCase\\highscores.txt")).exists()) {
-			// Check if the Game class still has the default directory (Desktop) set
-			if (game.getHighScoresPath().equals(
-					System.getenv("SystemDrive") + "\\users\\" + System.getProperty("user.name") + "\\Desktop")) {
-				// Set buttons to specific text
-				Object[] buttons = { "Create default", "Choose new location / select existing location" };
-				// Show warning message with options
-				if (JOptionPane.showOptionDialog(game.window,
-						"The highscores file was not located in it's default location:\n'" + game.getHighScoresPath()
-								+ "'\nWould you like to generate the file in the default directory?",
-						"Highscores Error", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, buttons,
-						null) == 0) {
-					// If the user decides to generate in the default location
-					generateFiles();
-				} else {
-					// If the user decides to choose their own location
-					changeHighscoresLocation();
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * changeHighscoresLocation changes the path of the highscores.txt parent
-	 * directory within the @link{Game} class using a GUI file chooser.
-	 */
-	private void changeHighscoresLocation() {
-		JFileChooser fileChooser = new JFileChooser(); // Create new file chooser
-
-		// Setup file chooser
-		fileChooser.setDialogTitle("Choose CyberCase directory:"); // Title bar
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Only select directories
-		fileChooser.setAcceptAllFileFilterUsed(false); // Cannot change what is selected
-
-		// Path to be grabbed
-		int path = fileChooser.showOpenDialog(null);
-
-		// Check if the path is a valid option
-		if (path == JFileChooser.APPROVE_OPTION) {
-			// Set the path in the Game class
-			game.setHighScoresPath(fileChooser.getSelectedFile().getAbsolutePath());
-		}
-
-		// Generate structure in specified directory
-		generateFiles();
-	}
-
-	/**
-	 * generateFiles creates the CyberCase/highscores.txt structure inside the
-	 * specified folder within the @link{Game} class.
-	 */
-	private void generateFiles() {
-		File path; // Path to be generated in
-
-		// Check if the specified path already has a CyberCase folder in it
-		if (game.getHighScoresPath().substring(game.getHighScoresPath().length() - 9).equals("CyberCase"))
-			path = new File(game.getHighScoresPath() + "\\highscores.txt"); // Add only text file to path
-		else
-			// Add both text file and folder to path
-			path = new File(game.getHighScoresPath() + "\\CyberCase\\highscores.txt");
-
-		// Create directories missing within the path (CyberCase)
-		path.getParentFile().mkdirs();
-
-		// Try to generate the highscores.txt file.
-		try {
-			path.createNewFile(); // Create file
-		} catch (IOException e) {
-			// If no write permissions are allowed show error message
-			JOptionPane.showMessageDialog(game.window,
-					"The required files could not be generated in the chosen directory.\nPlease select a different location.",
-					"Highscores Error", JOptionPane.ERROR_MESSAGE); // Display error message to user
-			e.printStackTrace(); // Print stack
-			changeHighscoresLocation(); // Force user to choose different directory
-		}
 	}
 
 	/**

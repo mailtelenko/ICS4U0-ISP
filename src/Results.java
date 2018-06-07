@@ -100,7 +100,7 @@ public class Results extends MenuParent {
 		// Write to highScores.txt file
 		try {
 			//Open output to file
-			PrintWriter dataOut = new PrintWriter(new FileWriter(game.getHighScoresPath() + "\\CyberCase\\highscores.txt")); 
+			PrintWriter dataOut = new PrintWriter(new FileWriter("resources/data/highScores.txt")); 
 			
 			// Prints out top 10 scores
 			for (int i = 0 ; i < scores.size() && i < 10 ; i++) {

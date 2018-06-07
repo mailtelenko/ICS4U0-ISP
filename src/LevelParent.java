@@ -128,6 +128,7 @@ public abstract class LevelParent extends JPanel {
 				timeRem--; // Subtract one from time remaining
 			if (timeRem < 0) { // If there is no time remaining
 				finishGame(false); // End game (lose)
+				showInfoPane(new String[] { "Out of Time", "You have ran out of time! Remember that you only have 5 minutes to find all the objects. Please try again." });
 			} else { // Time still remaining
 				if (((int) timeRem / 60) <= 0) // If there is less than a minute remaining
 					timerLabel.setText("" + (int) ((timeRem % 60) / 10) + (int) (timeRem % 60 % 10)); // Set label
@@ -400,8 +401,9 @@ public abstract class LevelParent extends JPanel {
 		}
 
 		// Check if the game is over (all objects found)
-		if (gameWin)
+		if (gameWin) {
 			finishGame(true); // Display buttons
+		}
 
 		container.setBackground(backgroundColor); // Set background colour
 		return container; // Return JPanel
@@ -466,7 +468,7 @@ public abstract class LevelParent extends JPanel {
 		
 		return container; //Return panel
 	}
-
+	
 	/**
 	 * startGame adds the correct game element to the screen and starts the timer.
 	 */

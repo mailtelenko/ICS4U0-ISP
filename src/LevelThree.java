@@ -40,6 +40,8 @@ public class LevelThree extends LevelParent {
 	private JButton user1, user2, user3;
 	/** Current user being talked to **/
 	private int currentUser = 1;
+	/** Correct user to be closed */
+	private int correctUser = 0;
 	/** Dialog between user and player */
 	private String[] dialog = new String[] { "", "", "" };
 	/** All prompts for the player */
@@ -55,9 +57,6 @@ public class LevelThree extends LevelParent {
 	 */
 	public LevelThree(Game gme) {
 		super(gme, "levelThree"); // Call to super with level
-		game = gme; // Set reference to game object
-
-		// Set instance variables
 		game = gme; // Set reference to game object
 
 		// JPanel to contain all elements
@@ -84,15 +83,10 @@ public class LevelThree extends LevelParent {
 		centerContainer.add(messageContainer, BorderLayout.CENTER); // Message box
 		centerContainer.add(new JPanel(), BorderLayout.SOUTH); // Temp JPanel to be removed
 
-		fillPrompts(); // Fill ArrayLists with prompts
-
 		// Set initial dialogs
 		for (int x = 0; x < 3; x++) {
 			dialog[x] = "User " + (x + 1) + ": " + greetings[x] + "<br/><br/>"; // Set dialog variable
 		}
-
-		updateMessages(); // Update the messages panel on the frame
-		updateButtons(); // Update the buttons (bottom of screen)
 
 		// Add to JPanel
 		add(createIntroduction("Three"), BorderLayout.CENTER); // Add description
@@ -127,17 +121,31 @@ public class LevelThree extends LevelParent {
 	}
 
 	/**
-	 * fillQuestions inputs data from a file specifically for each quiz, parses it,
-	 * and then adds the parsed data correctly to an ArrayList for use in the Quiz
-	 * object.
+	 * fillPrompts randomizes the users and then inputs data from a file 
+	 * specifically for each prompt, parses it, and then adds the parsed data 
+	 * correctly to an ArrayList for use.
 	 */
 	public void fillPrompts() {
+		int[] shuffleUsers = {1, 2, 3}; // Array of user numbers
 		String temp; // Empty temporary string
+		
+		// Shuffle array of users
+		for (int i = shuffleUsers.length - 1 ; i > 0 ; i--) {
+			int index = (int) (Math.random() * (i + 1)); // Generate random user index
+			int tem = shuffleUsers[i]; // Temporarily store current user
+			shuffleUsers[i] = shuffleUsers[index];
+			shuffleUsers[index] = tem;
+		}
+		
 		for (int x = 0; x < 3; x++) {
 			try { // Read from file
-					// Open input from file
+				// To identify the correct user to be closed
+				if (shuffleUsers[x] == 2) {
+					correctUser = x + 1;
+				}
+				// Open input from file
 				BufferedReader dataIn = new BufferedReader(
-						new FileReader("resources/data/levelThree/user" + (x + 1) + ".txt"));
+						new FileReader("resources/data/levelThree/user" + (shuffleUsers[x]) + ".txt"));
 				// While there are no empty lines in the file add the lines to the ArrayList
 				prompts.add(new ArrayList<String[]>());
 				while ((temp = dataIn.readLine()) != null) {
@@ -222,7 +230,7 @@ public class LevelThree extends LevelParent {
 	}
 
 	/**
-	 * clickedButtons determines which button was clicked and then updates the
+	 * checkButtons determines which button was clicked and then updates the
 	 * messages accordingly.
 	 * 
 	 * @param clickedString
@@ -230,11 +238,13 @@ public class LevelThree extends LevelParent {
 	 */
 	public void checkButtons(String clickedString) {
 		// Check if user closes a user's chat window
-		if(clickedString.equals("Close User 2")) {
+		if(clickedString.equals("Close User " + correctUser)) {
 			finishGame(true);
-		} else if(clickedString.equals("Close User 1") || clickedString.equals("Close User 3")) {
-			showInfoPane(new String[] { "Incorrect User", "The selected user was not the suspicous individual and you let the culprit get away. Please retry the level." });
+			showInfoPane(new String[] { "Correct User", "You managed to identify the suspicious individual. Good job!" });
+		} else if(clickedString.equals("Close User 1") || clickedString.equals("Close User 2") || clickedString.equals("Close User 3")) {
+			showInfoPane(new String[] { "Incorrect User", "The selected user was not the suspicious individual and you let the culprit get away. Please retry the level." });
 			finishGame(false);
+			fillPrompts();
 		}
 		
 		// Iterate over all prompts
@@ -253,6 +263,9 @@ public class LevelThree extends LevelParent {
 	public void startGame() {
 		remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER)); // Remove description
 		add(centerContainer, BorderLayout.CENTER); // Add game image
+		fillPrompts(); // Fill ArrayLists with prompts
+		updateMessages(); // Update the messages panel on the frame
+		updateButtons(); // Update the buttons (bottom of screen)
 		gameRunning = true; // Start timer
 		start = new Date(); // Start recording time
 	}
