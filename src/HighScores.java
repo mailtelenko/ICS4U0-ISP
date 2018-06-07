@@ -104,9 +104,9 @@ public class HighScores extends MenuParent {
 	private void eraseScores() {
 		try {
 			//Open input to file
-			BufferedReader dataIn = new BufferedReader(new FileReader("resources/data/highScores.txt"));
+			BufferedReader dataIn = new BufferedReader(new FileReader(game.getHighScoresPath() + "\\CyberCase\\highscores.txt"));
 			//Open output to file
-			PrintWriter dataOut = new PrintWriter(new FileWriter("resources/data/highScores.txt")); 
+			PrintWriter dataOut = new PrintWriter(new FileWriter(game.getHighScoresPath() + "\\CyberCase\\highscores.txt")); 
 			
 			// While there are no empty lines erase the lines
 			while ((dataIn.readLine()) != null) {
